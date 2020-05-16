@@ -1,12 +1,12 @@
 import Avatar from '../components/avatar'
 import Date from '../components/date'
 import CoverImage from '../components/cover-image'
-import PostTitle from '../components/post-title'
+import ProjectTitle from '../components/project-title'
 
-export default function PostHeader({ title, coverImage, date, author }) {
+export default function ProjectHeader({ title, coverImage, date, author }) {
   return (
     <>
-      <PostTitle>{title}</PostTitle>
+      <ProjectTitle>{title}</ProjectTitle>
       <div className="hidden md:block md:mb-12">
         <Avatar name={author.name} picture={author.picture} />
       </div>

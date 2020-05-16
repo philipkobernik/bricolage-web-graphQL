@@ -1,34 +1,34 @@
 import Container from '../components/container'
 import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
+import HeroProject from '../components/hero-project'
 import Intro from '../components/intro'
 import Layout from '../components/layout'
-import { getAllPostsForHome } from '../lib/api'
+import { getAllProjectsForHome } from '../lib/api'
 import Head from 'next/head'
 import { CMS_NAME } from '../lib/constants'
 
-export default function Index({ allPosts }) {
-  const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(1)
+export default function Index({ allProjects }) {
+  const heroProject = allProjects[0]
+  const moreProjects = allProjects.slice(1)
   return (
     <>
       <Layout>
         <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
+          <title>bricolage</title>
         </Head>
         <Container>
           <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
+          {heroProject && (
+            <HeroProject
+              title={heroProject.title}
+              coverImage={heroProject.coverImage}
+              date={heroProject.date}
+              author={heroProject.author}
+              slug={heroProject.slug}
+              excerpt={heroProject.excerpt}
             />
           )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+          {moreProjects.length > 0 && <MoreStories projects={moreProjects} />}
         </Container>
       </Layout>
     </>
@@ -36,8 +36,8 @@ export default function Index({ allPosts }) {
 }
 
 export async function getStaticProps({ preview }) {
-  const allPosts = await getAllPostsForHome(preview)
+  const allProjects = await getAllProjectsForHome(preview)
   return {
-    props: { allPosts },
+    props: { allProjects },
   }
 }

@@ -1,21 +1,21 @@
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Container from '../../components/container'
-import PostBody from '../../components/post-body'
+import ProjectBody from '../../components/project-body'
 import MoreStories from '../../components/more-stories'
 import Header from '../../components/header'
-import PostHeader from '../../components/post-header'
+import ProjectHeader from '../../components/project-header'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
-import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/api'
-import PostTitle from '../../components/post-title'
+import { getallProjectsWithSlug, getProjectAndMoreProjects } from '../../lib/api'
+import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 
-export default function Post({ post, morePosts, preview }) {
+export default function Project({ project, moreProjects, preview }) {
   const router = useRouter()
-  if (!router.isFallback && !post?.slug) {
+  if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
   }
   return (
@@ -23,26 +23,26 @@ export default function Post({ post, morePosts, preview }) {
       <Container>
         <Header />
         {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
+          <ProjectTitle>Loading…</ProjectTitle>
         ) : (
           <>
             <article>
               <Head>
                 <title>
-                  {post.title} | Next.js Blog Example with {CMS_NAME}
+                  {project.title} | Next.js Blog Example with {CMS_NAME}
                 </title>
-                <meta property="og:image" content={post.ogImage.url} />
+                <meta property="og:image" content={project.ogImage.url} />
               </Head>
-              <PostHeader
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
-                author={post.author}
+              <ProjectHeader
+                title={project.title}
+                coverImage={project.coverImage}
+                date={project.date}
+                author={project.author}
               />
-              <PostBody content={post.content} />
+              <ProjectBody content={project.content} />
             </article>
             <SectionSeparator />
-            {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+            {moreProjects.length > 0 && <MoreStories projects={moreProjects} />}
           </>
         )}
       </Container>
@@ -51,25 +51,25 @@ export default function Post({ post, morePosts, preview }) {
 }
 
 export async function getStaticProps({ params, preview }) {
-  const data = await getPostAndMorePosts(params.slug, preview)
-  const content = await markdownToHtml(data?.post?.content || '')
+  const data = await getProjectAndMoreProjects(params.slug, preview)
+  const content = await markdownToHtml(data?.project?.content || '')
 
   return {
     props: {
       preview,
-      post: {
-        ...data?.post,
+      project: {
+        ...data?.project,
         content,
       },
-      morePosts: data?.morePosts,
+      moreProjects: data?.moreProjects,
     },
   }
 }
 
 export async function getStaticPaths() {
-  const allPosts = await getAllPostsWithSlug()
+  const allProjects = await getallProjectsWithSlug()
   return {
-    paths: allPosts?.map(post => `/posts/${post.slug}`) || [],
+    paths: allProjects?.map(project => `/projects/${project.slug}`) || [],
     fallback: true,
   }
 }

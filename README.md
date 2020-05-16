@@ -73,14 +73,14 @@ Your blog should be up and running on [http://localhost:3000](http://localhost:3
 
 #### Try preview mode
 
-On DatoCMS, go to one of the posts you've created and:
+On DatoCMS, go to one of the projects you've created and:
 
 - **Update the title**. For example, you can add `[Draft]` in front of the title.
-- Click **Save**, but **DO NOT** click **Publish**. By doing this, the post will be in the draft state.
+- Click **Save**, but **DO NOT** click **Publish**. By doing this, the project will be in the draft state.
 
-(If it doesn't become draft, you need to go to the model settings for `Post`, go to **Additional Settings**, and turn on **Enable draft/published system**.)
+(If it doesn't become draft, you need to go to the model settings for `Project`, go to **Additional Settings**, and turn on **Enable draft/published system**.)
 
-Now, if you go to the post page on localhost, you won't see the updated title. However, if you use the **Preview Mode**, you'll be able to see the change ([Documentation](/docs/advanced-features/preview-mode.md)).
+Now, if you go to the project page on localhost, you won't see the updated title. However, if you use the **Preview Mode**, you'll be able to see the change ([Documentation](/docs/advanced-features/preview-mode.md)).
 
 To enable the Preview Mode, go to this URL:
 
@@ -89,7 +89,7 @@ http://localhost:3000/api/preview?secret=<secret>&slug=<slug>
 ```
 
 - `<secret>` should be the string you entered for `NEXT_EXAMPLE_CMS_DATOCMS_PREVIEW_SECRET`.
-- `<slug>` should be the post's `slug` attribute (you can check on DatoCMS).
+- `<slug>` should be the project's `slug` attribute (you can check on DatoCMS).
 
 You should now be able to see the updated title. To exit the preview mode, you can click **Click here to exit preview mode** at the top.
 
