@@ -3,7 +3,7 @@ import Date from '../components/date'
 import CoverImage from '../components/cover-image'
 import ProjectTitle from '../components/project-title'
 
-export default function ProjectHeader({ title, coverImage, date, author }) {
+export default function ProjectHeader({ title, coverImage, date, author, tags }) {
   return (
     <>
       <ProjectTitle>{title}</ProjectTitle>
@@ -22,6 +22,8 @@ export default function ProjectHeader({ title, coverImage, date, author }) {
         </div>
         <div className="mb-6 text-lg">
           <Date dateString={date} />
+          &nbsp;
+          { tags.map(t => (<span>{t.name}&nbsp;</span>))}
         </div>
       </div>
     </>

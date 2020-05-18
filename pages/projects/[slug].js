@@ -38,6 +38,7 @@ export default function Project({ project, moreProjects, preview }) {
                 coverImage={project.coverImage}
                 date={project.date}
                 author={project.author}
+                tags={project.tags}
               />
               <ProjectBody content={project.content} />
             </article>
@@ -56,7 +57,7 @@ export async function getStaticProps({ params, preview }) {
 
   return {
     props: {
-      preview,
+      preview: preview || null,
       project: {
         ...data?.project,
         content,
