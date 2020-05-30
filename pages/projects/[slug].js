@@ -3,6 +3,7 @@ import ErrorPage from 'next/error'
 import Container from '../../components/container'
 import ProjectBody from '../../components/project-body'
 import MoreStories from '../../components/more-stories'
+import ImageGallery from '../../components/image-gallery'
 import Header from '../../components/header'
 import ProjectHeader from '../../components/project-header'
 import SectionSeparator from '../../components/section-separator'
@@ -43,7 +44,8 @@ export default function Project({ project, moreProjects, preview }) {
               <ProjectBody content={project.content} />
             </article>
             <SectionSeparator />
-            {moreProjects.length > 0 && <MoreStories projects={moreProjects} />}
+            {project.imageGallery.length > 0 && <ImageGallery images={project.imageGallery} />}
+            {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
           </>
         )}
       </Container>
