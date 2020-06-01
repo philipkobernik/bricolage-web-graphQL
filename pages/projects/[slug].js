@@ -11,8 +11,12 @@ import Layout from '../../components/layout'
 import { getallProjectsWithSlug, getProjectAndMoreProjects } from '../../lib/api'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
+import Intro from '../../components/intro'
+
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
+
+
 
 export default function Project({ project, moreProjects, preview }) {
   const router = useRouter()
@@ -22,11 +26,12 @@ export default function Project({ project, moreProjects, preview }) {
   return (
     <Layout preview={preview}>
       <Container>
-        <Header />
+        {/*<Header />*/}
         {router.isFallback ? (
           <ProjectTitle>Loading…</ProjectTitle>
         ) : (
           <>
+          <Intro />
             <article>
               <Head>
                 <title>
@@ -34,6 +39,7 @@ export default function Project({ project, moreProjects, preview }) {
                 </title>
                 <meta property="og:image" content={project.ogImage.url} />
               </Head>
+
               <ProjectHeader
                 title={project.title}
                 coverImage={project.coverImage}
