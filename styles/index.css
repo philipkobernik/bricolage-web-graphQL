@@ -3,3 +3,7 @@
 @tailwind components;
 /* purgecss end ignore */
 @tailwind utilities;
+
+.title{
+  font-family: 'Press Start 2P', cursive;
+}

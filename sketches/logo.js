@@ -20,11 +20,22 @@ class Particle {
     this.changeCol = false;
     this.size = squareSize;
     this.speed = squareSize;
+    this.col;
+    let r = this.p5.random();
+    if (r < 0.25){
+      this.col= this.p5.color(233, 76, 23);
+    } else if (r < 0.5){
+      this.col= this.p5.color(42, 136, 171);
+    }  else if (r < 0.75){
+      this.col= this.p5.color(235, 228, 136);
+    }  else if (r < 1.){
+      this.col= this.p5.color(108, 109, 150);
+    }
   }
 
   display() {
     if (this.changeCol) {
-      this.p5.fill(color(233, 76, 23));
+      this.p5.fill(this.col);
     } else {
       this.p5.fill(0);
     }
@@ -62,6 +73,8 @@ const draw = p5 => {
   p5.background(255);
 
   for (let i = 0; i < ps.length; i++) {
+    ps[i].changeCol = isHovering(p5.mouseX, p5.mouseY);
+
     ps[i].display();
     if (p5.random() < 0.01 && !toggle) {
       ps[i].move();
@@ -122,6 +135,10 @@ function appear(p5) {
 
 }
 
+function isHovering(x, y){
+  return x > 0 && x< squareSize*bricolage.length && y > 0 && y < squareSize*bricolage.length
+}
+
 function word() {
   bricolage[0] = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0];
   bricolage[1] = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -149,4 +166,4 @@ function word() {
   bricolage[23] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 }
 
-export { setup, draw, mousePressed };
+export { setup, draw, mousePressed, isHovering };

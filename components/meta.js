@@ -27,6 +27,7 @@ export default function Meta() {
         href="/favicon/safari-pinned-tab.svg"
         color="#000000"
       />
+      <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Press+Start+2P&display=swap" rel="stylesheet"/>
       <link rel="shortcut icon" href="/favicon/favicon.ico" />
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
