@@ -73,11 +73,8 @@ const draw = p5 => {
   p5.background(255);
 
   for (let i = 0; i < ps.length; i++) {
-    if (p5.mouseX > 0 && p5.mouseX < squareSize*bricolage.length && p5.mouseY > 0 && p5.mouseY < squareSize*bricolage.length){
-       ps[i].changeCol = true;
-     } else {
-       ps[i].changeCol = false;
-     }
+    ps[i].changeCol = isHovering(p5.mouseX, p5.mouseY);
+
     ps[i].display();
     if (p5.random() < 0.01 && !toggle) {
       ps[i].move();
@@ -138,6 +135,10 @@ function appear(p5) {
 
 }
 
+function isHovering(x, y){
+  return x > 0 && x< squareSize*bricolage.length && y > 0 && y < squareSize*bricolage.length
+}
+
 function word() {
   bricolage[0] = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0];
   bricolage[1] = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -165,4 +166,4 @@ function word() {
   bricolage[23] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 }
 
-export { setup, draw, mousePressed };
+export { setup, draw, mousePressed, isHovering };
