@@ -6,6 +6,7 @@ import { setup, draw, mousePressed } from '../sketches/node-navigator.js'
 export default class BricolageNodeNavigator extends Component {
   constructor(props) {
       super(props)
+      this.props = props
       this.canvasParentRef = React.createRef()
       this.setup = setup;
 
@@ -18,7 +19,7 @@ export default class BricolageNodeNavigator extends Component {
     const p5 = require("p5")
     this.sketch = new p5( p => {
       p.setup = () => {
-        this.setup(p, this.canvasParentRef.current);
+        this.setup(p, this.canvasParentRef.current, this.props);
       };
       const p5Events = [
         "draw",
