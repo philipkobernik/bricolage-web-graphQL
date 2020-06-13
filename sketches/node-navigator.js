@@ -12,15 +12,20 @@ class Node {
 		this.title = title_; //string
 		console.log(authors_);
 		this.authors = [];
+		console.log(authors_);
 	//	for (var i = 0; i < authors_.; i++) {
-			this.authors.push(authors_["name"]); //array of strings
+		this.authors.push(authors_); //array of strings
 		//}
+		// console.log(this.authors);
 		this.date = date_; //string
 		//this.shortDescription = shortDescription_; //string
 		this.project_description = project_description_; //string
 		//this.medium = medium_; //array
 		//this.category = category_; //string
-		this.hashtags = hashtags_; //array
+		this.hashtags = [hashtags_]; //array
+		for(var i =0; i < hashtags_.length;i++){
+			this.hashtags.push(hashtags_[i]["name"])
+		}
 		this.slug = slug_; //string
 
 		// for (var i = 0; i < imageGallery_.length; i++) {
@@ -28,7 +33,7 @@ class Node {
 		// 	this.imageGallery.push(  img  );
 		// }
 
-		//this.lab_affiliation = lab_affiliation_;
+		// this.lab_affiliation = lab_affiliation_;
 
 		// set random initial positions
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance, this.p5.width - spacing_distance), this.p5.random(spacing_distance, this.p5.height - spacing_distance)  );
@@ -70,12 +75,9 @@ const setup = (p5, canvasParentRef,props) => {
   p5.createCanvas(750, 185).parent(canvasParentRef);
   p5.background(255);
 	p5.noStroke();
-	//console.log(props);
 	for(var i =0; i< props.p.length; i++){
-		//console.log(props.p[i].author["name"])
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].tags, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
-		//console.log("new node added!");
 	}
  }
 
@@ -98,22 +100,22 @@ const mousePressed = () => {
 }
 
 function assignRelatedness(p5, p1, p2) { //takes in two projects and checks their relation
-	// var hashtagCounter = 0;
-	// for (var i = 0; i < p2.getHashtags().length; i++) {
-	// 	if (p1.getHashtags().includes(p2.getHashtags()[i])) {
-	// 		hashtagCounter++;
-	// 	}
-	// }
-	// //print(hashtagCounter);
-	// if (hashtagCounter > 0) {
-	// 	p5.strokeWeight(hashtagCounter);
-	// 	var alpha = 20;
-	// 	if(p1.getLineAlpha() == 255 || p2.getLineAlpha() == 255){
-	// 		alpha = 255;
-	// 	}
-	// 	p5.stroke(211, 103, 60, alpha)
-	// 	p5.line(  p1.getPosition().x - p1.getSize()/3, p1.getPosition().y - p1.getSize()/3, p2.getPosition().x - p2.getSize()/3, p2.getPosition().y - p2.getSize()/3  );
-	// }
+	var hashtagCounter = 0;
+	for (var i = 0; i < p2.getHashtags().length; i++) {
+		// console.log(p2.getAuthors(), p2.getHashtags()[i])
+		if (p1.getHashtags().includes(p2.getHashtags()[i])) {
+			hashtagCounter++;
+		}
+	}
+	if (hashtagCounter > 0) {
+		p5.strokeWeight(hashtagCounter);
+		var alpha = 20;
+		if(p1.getLineAlpha() == 255 || p2.getLineAlpha() == 255){
+			alpha = 255;
+		}
+		p5.stroke(211, 103, 60, alpha)
+		p5.line(  p1.getPosition().x - p1.getSize()/3, p1.getPosition().y - p1.getSize()/3, p2.getPosition().x - p2.getSize()/3, p2.getPosition().y - p2.getSize()/3  );
+	}
 
 	// if (p1.getLabAffiliation() == p2.getLabAffiliation()) {
 	// 	strokeWeight(1);
@@ -125,24 +127,24 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 	// 	this.p5.line(p1.getPosition().x + 5, p1.getPosition().y, p2.getPosition().x + 5, p2.getPosition().y);
 	// }
 
-	// var nameCounter = 0;
-	// // console.log("Authors", p2.getAuthors().length);
-	// for (var i = 0; i < p2.getAuthors().length; i++) {
-	// 	// console.log(p1.getAuthors(), p2.getAuthors());
-	// 	if (p1.getAuthors().includes(p2.getAuthors()[i])) {
-	// 		//print("match!");
-	// 		nameCounter++;
-	// 	}
-	// }
+	var nameCounter = 0;
+	// console.log("Authors", p2.getAuthors().length);
+	for (var i = 0; i < p2.getAuthors().length; i++) {
+		// console.log(p1.getAuthors(), p2.getAuthors());
+		if (p1.getAuthors().includes(p2.getAuthors()[i])) {
+			//print("match!");
+			nameCounter++;
+		}
+	}
 	
-	// if (nameCounter > 0) {
-	// 	p5.strokeWeight(nameCounter/10);
-	// 			var alpha = 20;
-	// 	if(p1.getLineAlpha() == 255 || p2.getLineAlpha() == 255){
-	// 		alpha = 255;
-	// 	}
-	// 	p5.stroke(96, 99, 134,alpha);
-	// 	p5.line(p1.getPosition().x + p1.getSize()/3, p1.getPosition().y + p1.getSize()/3, p2.getPosition().x + p2.getSize()/3, p2.getPosition().y + p2.getSize()/3);
-	// }
+	if (nameCounter > 0) {
+		p5.strokeWeight(nameCounter);
+				var alpha = 20;
+		if(p1.getLineAlpha() == 255 || p2.getLineAlpha() == 255){
+			alpha = 255;
+		}
+		p5.stroke(96, 99, 134,alpha);
+		p5.line(p1.getPosition().x + p1.getSize()/3, p1.getPosition().y + p1.getSize()/3, p2.getPosition().x + p2.getSize()/3, p2.getPosition().y + p2.getSize()/3);
+	}
 }
 export { setup, draw, mousePressed};
