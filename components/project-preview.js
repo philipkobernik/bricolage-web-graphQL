@@ -12,24 +12,26 @@ export default function ProjectPreview({
   slug,
 }) {
   return (
-    <div>
-      <div className="mb-5">
+    <div class="flex">
+      <div className="w-1/3 pr-8">
         <CoverImage
           slug={slug}
           title={title}
           responsiveImage={coverImage.responsiveImage}
         />
       </div>
-      <h3 className="text-3xl mb-3 leading-snug">
-        <Link as={`/projects/${slug}`} href="/projects/[slug]">
-          <a className="hover:underline">{title}</a>
-        </Link>
-      </h3>
-      <div className="text-lg mb-4">
-        <Date dateString={date} />
+        <div class="flex-wrap">
+        <h3 className="w-full text-3xl mb-4 leading-snug">
+          <Link as={`/projects/${slug}`} href="/projects/[slug]">
+            <a className="hover:underline">{title}</a>
+          </Link>
+        </h3>
+        <p className="w-full text-lg leading-relaxed mb-4">{excerpt}</p>
+        <Avatar name={author.name} picture={author.picture} />
+        <div className="w-full text-lg mb-4">
+          <Date dateString={date} />
+        </div>
       </div>
-      <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
-      <Avatar name={author.name} picture={author.picture} />
     </div>
   )
 }
