@@ -6,26 +6,29 @@ import ProjectTitle from '../components/project-title'
 export default function ProjectHeader({ title, coverImage, date, author, tags }) {
   return (
     <>
-      <ProjectTitle>{title}</ProjectTitle>
-      <div className="hidden md:block md:mb-12">
-        <Avatar name={author.name} picture={author.picture} />
-      </div>
       <div className="mb-8 md:mb-16 -mx-5 sm:mx-0">
         <CoverImage
           title={title}
           responsiveImage={coverImage.responsiveImage}
         />
       </div>
+
+      {/*<div className="hidden md:block md:mb-12">
+        <Avatar name={author.name} picture={author.picture} />
+      </div>
+
+
       <div className="max-w-2xl mx-auto">
         <div className="block md:hidden mb-6">
           <Avatar name={author.name} picture={author.picture} />
         </div>
         <div className="mb-6 text-lg">
           <Date dateString={date} />
-          &nbsp;
-          { tags.map(t => (<span>{t.name}&nbsp;</span>))}
+          <br/>
+          { tags.map(t => (<span className="text-orange">{t.name}&nbsp;</span>))}
         </div>
       </div>
+      */}
     </>
   )
 }

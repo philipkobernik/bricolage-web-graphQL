@@ -1,10 +1,19 @@
 module.exports = {
   theme: {
+    fontFamily: {
+      'sans': ['Barlow', 'Arial', 'sans-serif'],
+      display: ['Barlow', 'sans-serif'],
+      body: ['Graphik', 'sans-serif'],
+    },
     extend: {
       colors: {
         'accent-1': '#FAFAFA',
         'accent-2': '#EAEAEA',
         'accent-7': '#333',
+        blue: '#2a88ab',
+        orange: '#df6c2d',
+        yellow: '#ebe488',
+        purple: '#6c6d96',
         success: '#0070f3',
         cyan: '#79FFE1',
       },
