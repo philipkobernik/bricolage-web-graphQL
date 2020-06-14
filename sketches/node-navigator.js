@@ -113,6 +113,9 @@ class Node {
 	setClick() { this.is_clicked = !this.is_clicked; }
 
 	update() {
+		this.position.add(this.velocity);
+		this.velocity = this.p5.createVector(0);
+		
 		if (this.is_clicked) {
 			// go to project page
 			// TO DO
@@ -126,6 +129,10 @@ class Node {
 		//this.p5.image(this.coverImage, this.getPosition().x, this.getPosition().y, this.size, this.size);
 		this.p5.rect(this.getPosition().x, this.getPosition().y, this.size, this.size);
 	}
+
+	applyForce(vec) {
+    this.velocity.add(vec);
+  }
 }
 
 const setup = (p5, canvasParentRef,props) => {
@@ -162,9 +169,14 @@ const draw = p5 => {
 
 	if (node_navi_state == 1) { //hashtag view
 		displayHashtags();
+
+		for (var i = 0; i < nodes.length; i++) {
+			gravitationalPull(p5, nodes[i]);
+		}
 	}
 	
 	for (var i = 0; i < nodes.length; i++) {
+		nodes[i].update();
 		nodes[i].display();
 		hover(p5, nodes[i]);
 	}
@@ -291,4 +303,27 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 		p5.line(p1.getPosition().x + 5, p1.getPosition().y + 5, p2.getPosition().x +5, p2.getPosition().y + 5);
 	}
 }
+
+//this organizes the node position based on hashtag location
+function gravitationalPull(p5, p) {
+  // linear interpolation between node initial position (random) to the hashtag_position location +- some random number
+  var initialPos = p5.createVector(p.getPosition().x, p.getPosition().y);
+  //print(pos);
+  var ht_array = p.getHashtags();
+
+  var directionVector = p5.createVector(0);
+
+  for (var i = 0; i < ht_array.length; i++) {
+    for (var j = 0; j < global_hashtags.length; j++) {
+      var finalPos = p5.createVector(global_hashtags[j].getPosition().x, global_hashtags[j].getPosition().y);
+      if (p5.match(global_hashtags[j].getName(), ht_array[i])) {
+        finalPos.sub(initialPos);
+        directionVector.add(finalPos);
+      }
+    }
+  }
+  directionVector.normalize();
+  p.applyForce(directionVector);
+}
+
 export { setup, draw, mousePressed, mouseDragged, mouseReleased };
