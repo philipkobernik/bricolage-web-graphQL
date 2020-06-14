@@ -1,17 +1,20 @@
 let node_size = 100; //initial
 let spacing_distance = 0;
 
-let button;
+let default_button;
+let hashtag_button;
 let nodes = [];
 let global_hashtags = [];
 
 let node_navi_state = 0;
 
 class Hashtag {
-  constructor(name) {
-    this.name = name;
-    this.textSize = 15;
-    this.position = createVector(random(100, width - 100), random(100, height - 100));
+  constructor(p5_, name_) {
+		this.p5 = p5_;
+    this.name = name_;
+		this.textSize = 15;
+		// TO DO: Fix overlapping
+		this.position = this.p5.createVector(  this.p5.random(spacing_distance * 1.5, this.p5.width - spacing_distance * 1.5), this.p5.random(spacing_distance * 1.5, this.p5.height - spacing_distance * 1.5)  );
     this.isDragged = false;
   }
   
@@ -23,18 +26,19 @@ class Hashtag {
   setDragged(b) {this.isDragged = b; }
   
   display() {
-    fill(0);
-    textSize(this.textSize);
-    textAlign(CENTER, CENTER);
+		this.p5.fill(0);
+		this.p5.noStroke();
+    //this.p5.textSize(this.textSize);
+    //this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
     //print("name: " + this.name + " x: " + this.position.x + " y: " +  this.position.y);
-    text(this.name, this.position.x, this.position.y);
+    this.p5.text(this.name, this.position.x, this.position.y);
   }
   
   checkPositions() {
-    if (mouseX >= this.position.x - this.textSize * 2 && 
-        mouseX <= this.position.x + this.textSize * 2 && 
-        mouseY >= this.position.y - this.textSize && 
-        mouseY <= this.position.y + this.textSize) 
+    if (this.p5.mouseX >= this.position.x - this.textSize * 2 && 
+				this.p5.mouseX <= this.position.x + this.textSize * 2 && 
+				this.p5.mouseY >= this.position.y - this.textSize && 
+				this.p5.mouseY <= this.position.y + this.textSize) 
     {
       this.isDragged = true;
     }
@@ -60,13 +64,20 @@ class Node {
 		this.project_description = project_description_; //string
 		//this.medium = medium_; //array
 		//this.category = category_; //string
-		this.hashtags = [hashtags_]; //array
-		for(var i =0; i < hashtags_.length;i++){
+		this.hashtags = []; //array
+		for(var i = 0; i < hashtags_.length; i++){
+			var found = false;
 			this.hashtags.push(hashtags_[i]["name"]);
 			//set the global hashtag array
-			// if (!global_hashtags.includes(hashtags_[i])) {
-			// 	global_hashtags.push(hashtags_[i]);
-			// }
+			for (var j = 0; j < global_hashtags.length; j++) {
+				if (global_hashtags[j].getName().includes(hashtags_[i]["name"])) {
+					found = true;
+				}
+			}
+			if (!found) {
+				console.log("new hashtag added");
+				global_hashtags.push(new Hashtag(this.p5, hashtags_[i]["name"]));
+			}
 		}
 
 		this.slug = slug_; //string
@@ -104,6 +115,7 @@ class Node {
 	update() {
 		if (this.is_clicked) {
 			// go to project page
+			// TO DO
     } 
 	}
 
@@ -121,31 +133,22 @@ const setup = (p5, canvasParentRef,props) => {
   p5.background(255);
 	p5.noStroke();
 	node_size = node_size/props.p.length; // the more projects we add, the smaller the nodes will become
-	spacing_distance = node_size/2 + 10;
+	spacing_distance = node_size/2 + 20;
 	for(var i =0; i< props.p.length; i++){
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].tags, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
 	}
 
-	button = p5.createButton("hashtag view");
-	button.position(720, 250);
+	default_button = p5.createButton("default view");
+	default_button.position(p5.width - 30, p5.height + 65);
+	hashtag_button = p5.createButton("hashtag view");
+	hashtag_button.position(p5.width - 30, p5.height + 90);
 
-	console.log(global_hashtags);
+	console.log("length", global_hashtags.length);
+	for (var i = 0; i < global_hashtags.length; i++) {
+		console.log(global_hashtags[i].getName());
+	}
  }
-
-const mousePressed = p5 => {
-	// var index = 0;
-  for (var i = 0; i < nodes.length; i++) {
-    if (p5.mouseX > nodes[i].getPosition().x - nodes[i].size / 2 &&
-      p5.mouseX < nodes[i].getPosition().x + nodes[i].size / 2 &&
-      p5.mouseY > nodes[i].getPosition().y - nodes[i].size / 2 &&
-      p5.mouseY < nodes[i].getPosition().y + nodes[i].size / 2) {
-      nodes[i].setClick();
-    }
-    else{
-    }
-  }
-}
 
 const draw = p5 => {
 	p5.background(255);
@@ -166,7 +169,49 @@ const draw = p5 => {
 		hover(p5, nodes[i]);
 	}
 
-	button.mousePressed(hashtagView);
+	default_button.mousePressed(defaultView);
+	hashtag_button.mousePressed(hashtagView);
+
+}
+
+const mousePressed = p5 => {
+	// var index = 0;
+  for (var i = 0; i < nodes.length; i++) {
+    if (p5.mouseX > nodes[i].getPosition().x - nodes[i].size / 2 &&
+      p5.mouseX < nodes[i].getPosition().x + nodes[i].size / 2 &&
+      p5.mouseY > nodes[i].getPosition().y - nodes[i].size / 2 &&
+      p5.mouseY < nodes[i].getPosition().y + nodes[i].size / 2) {
+      nodes[i].setClick();
+    }
+    else {
+    }
+	}
+	
+	for (var i = 0; i < global_hashtags.length; i++) {
+    global_hashtags[i].checkPositions();
+  }
+}
+
+const mouseDragged = p5 => {
+  for (var i = 0; i < global_hashtags.length; i++) {
+    if (global_hashtags[i].getDragged() == true) { // if its being dragged
+      global_hashtags[i].setPosition(p5.createVector(p5.mouseX, p5.mouseY));
+    }
+  }
+}
+
+const mouseReleased = p5 => {
+  for (var i = 0; i < global_hashtags.length; i++) {
+    if (global_hashtags[i].getDragged() == true) {
+      //global_hashtags[i].setPosition(createVector(mouseX, mouseY));
+      global_hashtags[i].setDragged(false);
+    }
+  }
+}
+
+function defaultView() {
+	console.log("default view!");
+	node_navi_state = 0;
 }
 
 function hashtagView() {
@@ -175,7 +220,10 @@ function hashtagView() {
 }
 
 function displayHashtags() {
-
+	for (var i = 0; i < global_hashtags.length; i++) {
+		//grab their positions and visualize their names at that coordinate
+		global_hashtags[i].display();
+	}
 }
 
 function hover(p5, p) {
@@ -243,4 +291,4 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 		p5.line(p1.getPosition().x + 5, p1.getPosition().y + 5, p2.getPosition().x +5, p2.getPosition().y + 5);
 	}
 }
-export { setup, draw, mousePressed};
+export { setup, draw, mousePressed, mouseDragged, mouseReleased };
