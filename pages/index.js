@@ -21,7 +21,7 @@ export default function Index({ allProjects }) {
         </Head>
         <Container>
           <Intro projects = {allProjects}/>
-          {/* {heroProject && (
+          {heroProject && (
             <HeroProject
               title={heroProject.title}
               coverImage={heroProject.coverImage}
@@ -29,10 +29,9 @@ export default function Index({ allProjects }) {
               author={heroProject.author}
               slug={heroProject.slug}
               excerpt={heroProject.excerpt}
-              hashtags={heroProject.hashtags}
             />
           )}
-          {moreProjects.length > 0 && <MoreStories projects={moreProjects} />} */}
+          {moreProjects.length > 0 && <MoreStories projects={moreProjects} />} }
         </Container>
       </Layout>
     </>
