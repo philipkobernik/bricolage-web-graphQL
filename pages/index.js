@@ -12,6 +12,7 @@ import { CMS_NAME } from '../lib/constants'
 export default function Index({ allProjects }) {
   const heroProject = allProjects[0]
   const moreProjects = allProjects.slice(1)
+  console.log("allprojects", allProjects)
   return (
     <>
       <Layout>
@@ -19,8 +20,8 @@ export default function Index({ allProjects }) {
           <title>bricolage</title>
         </Head>
         <Container>
-          <Intro />
-          {heroProject && (
+          <Intro projects = {allProjects}/>
+          {/* {heroProject && (
             <HeroProject
               title={heroProject.title}
               coverImage={heroProject.coverImage}
@@ -29,7 +30,7 @@ export default function Index({ allProjects }) {
               slug={heroProject.slug}
               excerpt={heroProject.excerpt}
             />
-          )}
+          )} */}
           {moreProjects.length > 0 && <MoreStories projects={moreProjects} />}
         </Container>
       </Layout>
@@ -43,3 +44,5 @@ export async function getStaticProps({ preview }) {
     props: { allProjects },
   }
 }
+
+
