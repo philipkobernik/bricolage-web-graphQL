@@ -4,10 +4,6 @@ import Avatar from '../components/avatar'
 import Date from '../components/date'
 
 export default function ProjectBody({ title, coverImage, date, author, tags, content }) {
- function handleClick(e) {
-    e.preventDefault();
-    console.log('The link was clicked.');
-  }
 
   return (
     <>
@@ -32,7 +28,7 @@ export default function ProjectBody({ title, coverImage, date, author, tags, con
       </div>
 
     <div className="md:col-start-2 md:col-end-5 z-10 shadow-xl mb-40">
-      <div onClick={handleClick}
+      <div
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: content }}
       />
