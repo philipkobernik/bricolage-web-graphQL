@@ -52,9 +52,7 @@ class Node {
 		this.coverImage = coverImage_;
 		//this.coverImage = this.p5.loadImage(coverImage_); //image object
 		this.title = title_; //string
-		console.log(authors_);
 		this.authors = [];
-		console.log(authors_);
 	//	for (var i = 0; i < authors_.; i++) {
 		this.authors.push(authors_); //array of strings
 		//}
@@ -90,7 +88,7 @@ class Node {
 		// this.lab_affiliation = lab_affiliation_;
 
 		// set random initial positions
-		this.position = this.p5.createVector(  this.p5.random(spacing_distance, this.p5.width - spacing_distance), this.p5.random(spacing_distance, this.p5.height - spacing_distance)  );
+		this.position = this.p5.createVector(  this.p5.random(spacing_distance, this.p5.windowWidth-400 - spacing_distance), this.p5.random(spacing_distance, this.p5.height - spacing_distance)  );
 		this.velocity = this.p5.createVector(0, 0, 0);
 		this.size = node_size;
 		this.alpha = 255;
@@ -119,6 +117,8 @@ class Node {
 		if (this.is_clicked) {
 			// go to project page
 			// TO DO
+			window.open("/projects/" + this.slug);
+			this.is_clicked = false;
     } 
 	}
 
@@ -136,24 +136,24 @@ class Node {
 }
 
 const setup = (p5, canvasParentRef,props) => {
-  p5.createCanvas(750, 185).parent(canvasParentRef);
+  p5.createCanvas(p5.windowWidth-400, 555).parent(canvasParentRef);
   p5.background(255);
 	p5.noStroke();
+	console.log(props);
 	node_size = node_size/props.p.length; // the more projects we add, the smaller the nodes will become
 	spacing_distance = node_size/2 + 20;
 	for(var i =0; i< props.p.length; i++){
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].tags, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
 	}
+	// default_button = p5.createButton("default view");
+	// default_button.position(p5.windowWidth - 30, p5.height + 65);
+	// hashtag_button = p5.createButton("hashtag view");
+	// hashtag_button.position(p5.windowWidth - 30, p5.height + 90);
 
-	default_button = p5.createButton("default view");
-	default_button.position(p5.width - 30, p5.height + 65);
-	hashtag_button = p5.createButton("hashtag view");
-	hashtag_button.position(p5.width - 30, p5.height + 90);
-
-	console.log("length", global_hashtags.length);
+	// console.log("length", global_hashtags.length);
 	for (var i = 0; i < global_hashtags.length; i++) {
-		console.log(global_hashtags[i].getName());
+		// console.log(global_hashtags[i].getName());
 	}
  }
 
@@ -181,10 +181,13 @@ const draw = p5 => {
 		hover(p5, nodes[i]);
 	}
 
-	default_button.mousePressed(defaultView);
-	hashtag_button.mousePressed(hashtagView);
+	// default_button.mousePressed(defaultView);
+	// hashtag_button.mousePressed(hashtagView);
 
 }
+const windowResized = p5 => {
+	p5.resizeCanvas(p5.windowWidth-400, 555);
+  }
 
 const mousePressed = p5 => {
 	// var index = 0;
@@ -222,12 +225,12 @@ const mouseReleased = p5 => {
 }
 
 function defaultView() {
-	console.log("default view!");
+	// console.log("default view!");
 	node_navi_state = 0;
 }
 
 function hashtagView() {
-	console.log("hashtag view!");
+	// console.log("hashtag view!");
 	node_navi_state = 1;
 }
 
@@ -326,4 +329,4 @@ function gravitationalPull(p5, p) {
   p.applyForce(directionVector);
 }
 
-export { setup, draw, mousePressed, mouseDragged, mouseReleased };
+export { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized };

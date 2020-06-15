@@ -8,7 +8,7 @@ import Header from '../../components/header'
 import ProjectHeader from '../../components/project-header'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
-import { getallProjectsWithSlug, getProjectAndMoreProjects } from '../../lib/api'
+import { getallProjectsWithSlug, getProjectAndMoreProjects, getAllProjectsForHome } from '../../lib/api'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
@@ -18,7 +18,8 @@ import markdownToHtml from '../../lib/markdownToHtml'
 
 
 
-export default function Project({ project, moreProjects, preview }) {
+export default function Project({ project, moreProjects, preview, allProjects }) {
+  console.log("SLUG", allProjects)
   const router = useRouter()
   if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
@@ -31,7 +32,7 @@ export default function Project({ project, moreProjects, preview }) {
           <ProjectTitle>Loading…</ProjectTitle>
         ) : (
           <>
-          <Intro />
+          <Intro projects = {allProjects}/>
             <article>
               <Head>
                 <title>
@@ -62,6 +63,7 @@ export default function Project({ project, moreProjects, preview }) {
 export async function getStaticProps({ params, preview }) {
   const data = await getProjectAndMoreProjects(params.slug, preview)
   const content = await markdownToHtml(data?.project?.content || '')
+  const allProjects = await getAllProjectsForHome(preview)
 
   return {
     props: {
@@ -71,6 +73,7 @@ export async function getStaticProps({ params, preview }) {
         content,
       },
       moreProjects: data?.moreProjects,
+      allProjects
     },
   }
 }

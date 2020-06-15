@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { Component } from "react";
 
-import { setup, draw, mousePressed, mouseDragged, mouseReleased } from '../sketches/node-navigator.js'
+import { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized } from '../sketches/node-navigator.js'
 
 export default class BricolageNodeNavigator extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ export default class BricolageNodeNavigator extends Component {
       this.sketchEvents["mousePressed"] = mousePressed;
       this.sketchEvents["mouseDragged"] = mouseDragged;
       this.sketchEvents["mouseReleased"] = mouseReleased;
+      this.sketchEvents["windowResized"] = windowResized;
   }
 
   componentDidMount(){
