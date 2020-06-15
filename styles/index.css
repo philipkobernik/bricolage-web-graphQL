@@ -20,3 +20,17 @@
 p {
   padding-bottom: 20px;
 }
+
+.videodiv {
+  width: 100%;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.react-player{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
