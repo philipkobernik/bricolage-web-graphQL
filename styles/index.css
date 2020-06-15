@@ -5,5 +5,18 @@
 @tailwind utilities;
 
 .title{
-  font-family: 'Press Start 2P', cursive;
+  font-family: 'Barlow', sans-serif;
+}
+
+.description{
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.5);
+
+  font-family: 'Barlow', sans-serif;
+  padding:20px;
+}
+
+p {
+  padding-bottom: 20px;
 }
