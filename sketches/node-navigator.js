@@ -1,12 +1,8 @@
 let node_size = 100; //initial
 let spacing_distance = 0;
 
-let default_button;
-let hashtag_button;
 let nodes = [];
 let global_hashtags = [];
-
-let node_navi_state = 0;
 
 class Hashtag {
   constructor(p5_, name_) {
@@ -89,7 +85,9 @@ class Node {
 
 		// set random initial positions
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance, this.p5.windowWidth-400 - spacing_distance), this.p5.random(spacing_distance, this.p5.height - spacing_distance)  );
-		this.velocity = this.p5.createVector(0, 0, 0);
+		this.velocity = this.p5.createVector(this.p5.random(0, 1), this.p5.random(0, 1));
+		this.acceleration = this.p5.createVector(0, 0);
+		this.direction = this.p5.createVector( 1, 1 );
 		this.size = node_size;
 		this.alpha = 255;
 		this.line_alpha = 50;
@@ -105,15 +103,28 @@ class Node {
 	getTitle() { return this.title; }
 	getAuthors() { return this.authors; }
 	getSize() { return this.size; }
+	getVelocity() { return this.velocity; }
+	getAcceleration() { return this.acceleration; }
 
 	//setters
 	setLineAlpha(l_a) { this.line_alpha = l_a; }
+
 	setClick() { this.is_clicked = !this.is_clicked; }
 
+	inverseX() { this.direction.x *= -1; }
+	inverseY() { this.direction.y *= -1; }
+	getDirection() { return this.direction; }
+
 	update() {
+		this.velocity.add(this.acceleration);
+		this.acceleration = this.p5.createVector(0, 0);
+		this.velocity.mult(this.direction.x, this.direction.y);
 		this.position.add(this.velocity);
-		this.velocity = this.p5.createVector(0);
-		
+		this.velocity.mult(0.1);
+		//this.velocity = this.p5.createVector(0, 0);
+		//console.log(this.velocity);
+		//this.velocity = this.p5.createVector(0, 0);
+
 		if (this.is_clicked) {
 			// go to project page
 			// TO DO
@@ -131,7 +142,8 @@ class Node {
 	}
 
 	applyForce(vec) {
-    this.velocity.add(vec);
+		this.acceleration.add(vec);
+		//this.acceleration = vec;
   }
 }
 
@@ -146,44 +158,25 @@ const setup = (p5, canvasParentRef,props) => {
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].tags, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
 	}
-	// default_button = p5.createButton("default view");
-	// default_button.position(p5.windowWidth - 30, p5.height + 65);
-	// hashtag_button = p5.createButton("hashtag view");
-	// hashtag_button.position(p5.windowWidth - 30, p5.height + 90);
-
-	// console.log("length", global_hashtags.length);
-	for (var i = 0; i < global_hashtags.length; i++) {
-		// console.log(global_hashtags[i].getName());
-	}
  }
 
 const draw = p5 => {
 	p5.background(255);
 	p5.background(234, 227, 148, 100);
 	for (var i = 0; i < nodes.length; i++) {
-    for (var j = i+1; j < nodes.length; j++) {
-			//console.log(i,j)
+    for (var j = i; j < nodes.length; j++) {
       assignRelatedness(p5, nodes[i], nodes[j]);
     }
 	}
-
-	if (node_navi_state == 1) { //hashtag view
-		displayHashtags();
-
-		for (var i = 0; i < nodes.length; i++) {
-			gravitationalPull(p5, nodes[i]);
-		}
-	}
-	
 	for (var i = 0; i < nodes.length; i++) {
+		for (var j = i; j < nodes.length; j++) {
+			physicalSimulation(p5, nodes[i], nodes[j]);
+		}
 		nodes[i].update();
+		checkBoundaries(p5, nodes[i]);
 		nodes[i].display();
 		hover(p5, nodes[i]);
 	}
-
-	// default_button.mousePressed(defaultView);
-	// hashtag_button.mousePressed(hashtagView);
-
 }
 const windowResized = p5 => {
 	p5.resizeCanvas(p5.windowWidth-400, 555);
@@ -222,16 +215,6 @@ const mouseReleased = p5 => {
       global_hashtags[i].setDragged(false);
     }
   }
-}
-
-function defaultView() {
-	// console.log("default view!");
-	node_navi_state = 0;
-}
-
-function hashtagView() {
-	// console.log("hashtag view!");
-	node_navi_state = 1;
 }
 
 function displayHashtags() {
@@ -307,26 +290,77 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 	}
 }
 
-//this organizes the node position based on hashtag location
-function gravitationalPull(p5, p) {
-  // linear interpolation between node initial position (random) to the hashtag_position location +- some random number
-  var initialPos = p5.createVector(p.getPosition().x, p.getPosition().y);
-  //print(pos);
-  var ht_array = p.getHashtags();
-
-  var directionVector = p5.createVector(0);
-
-  for (var i = 0; i < ht_array.length; i++) {
-    for (var j = 0; j < global_hashtags.length; j++) {
-      var finalPos = p5.createVector(global_hashtags[j].getPosition().x, global_hashtags[j].getPosition().y);
-      if (p5.match(global_hashtags[j].getName(), ht_array[i])) {
-        finalPos.sub(initialPos);
-        directionVector.add(finalPos);
-      }
-    }
-  }
-  directionVector.normalize();
-  p.applyForce(directionVector);
+function physicalSimulation(p5, p1, p2) {
+	//attractive forces
+	var directionVector = p5.createVector(0, 0);
+	let pos_difference = p5.createVector((p2.getPosition().x - p1.getPosition().x), (p2.getPosition().y - p1.getPosition().y));
+	if (pos_difference.mag() > 10 ) {
+		//console.log("pos_difference", pos_difference);
+		for (var i = 0; i < p2.getHashtags().length; i++) {
+			if (p1.getHashtags().includes(p2.getHashtags()[i])) {
+				directionVector.add(pos_difference);
+			} else {
+				directionVector.sub(pos_difference);
+			}
+		}
+		for (var i = 0; i < p2.getAuthors().length; i++) {
+			if (p1.getAuthors().includes(p2.getAuthors()[i])) {
+				directionVector.add(pos_difference);
+			} else {
+				directionVector.sub(pos_difference);
+			}
+		}
+	}
+	directionVector.normalize();
+	p1.applyForce(directionVector);
+	//maybe apply force to the second project? equal and opposite?
 }
+
+function checkBoundaries(p5, n) {
+	//console.log(n.getPosition());
+	if ( n.getPosition().x <= spacing_distance || n.getPosition().x >= p5.windowWidth - 400 - spacing_distance ) {
+		//console.log("out of x bounds"); 
+		n.inverseX();
+	}
+	if ( n.getPosition().y <= spacing_distance || n.getPosition().y >= 555 - spacing_distance ) { 
+		//console.log("out of y bounds"); 
+		n.inverseY();
+	}
+
+	// for (var i = 0; i < nodes.length; i++) {
+	// 	if (n.getPosition().x + n.getSize()/2 < nodes[i].getPosition().x - nodes[i].getSize()/2 ||
+	// 			n.getPosition().x - n.getSize()/2 > nodes[i].getPosition().x + nodes[i].getSize()/2 &&
+	// 			(n.getPosition().y + n.getSize()/2 < nodes[i].getPosition().y - nodes[i].getSize()/2 ||
+	// 			n.getPosition().y - n.getSize()/2 > nodes[i].getPosition().y + nodes[i].getSize()/2) )
+	// 	{
+	// 		console.log("bounce");
+	// 		//bounce off each other
+	// 		n.inverseDirection();
+	// 	}
+	// }
+}
+
+//this organizes the node position based on hashtag location
+// function gravitationalPull(p5, p) {
+// 	//console.log("pulling");
+//   // linear interpolation between node initial position (random) to the hashtag_position location +- some random number
+//   var initialPos = p5.createVector(p.getPosition().x, p.getPosition().y);
+//   //print(pos);
+//   var ht_array = p.getHashtags();
+
+//   var directionVector = p5.createVector(0);
+
+//   for (var i = 0; i < ht_array.length; i++) {
+//     for (var j = 0; j < global_hashtags.length; j++) {
+//       var finalPos = p5.createVector(global_hashtags[j].getPosition().x, global_hashtags[j].getPosition().y);
+//       if (p5.match(global_hashtags[j].getName(), ht_array[i])) {
+//         finalPos.sub(initialPos);
+//         directionVector.add(finalPos);
+//       }
+//     }
+//   }
+//   directionVector.normalize();
+//   p.applyForce(directionVector);
+// }
 
 export { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized };
