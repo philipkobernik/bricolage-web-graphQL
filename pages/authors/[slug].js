@@ -48,10 +48,7 @@ export async function getStaticProps({ params, preview }) {
   return {
     props: {
       preview: preview || null,
-      author: {
-        ...data?.author,
-
-      },
+      author: data?.author,
     },
   }
 }
