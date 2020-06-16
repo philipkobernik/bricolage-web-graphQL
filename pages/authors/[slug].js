@@ -1,18 +1,14 @@
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Container from '../../components/container'
-import ProjectBody from '../../components/project-body'
-import MoreStories from '../../components/more-stories'
-import ImageGallery from '../../components/image-gallery'
 import Header from '../../components/header'
 import ProjectHeader from '../../components/project-header'
-import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
 import { getallAuthorsWithSlug, getAuthors } from '../../lib/api'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
-import VideoPlayer from '../../components/video-player'
+
 
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
@@ -20,13 +16,12 @@ import { ParallaxProvider } from 'react-scroll-parallax';
 
 
 
-export default function Project({ project, moreProjects, preview }) {
+export default function Author({ author, preview }) {
 
   const router = useRouter()
-  if (!router.isFallback && !project?.slug) {
+  if (!router.isFallback && !author?.slug) {
     return <ErrorPage statusCode={404} />
   }
-  console.log(project)
 
   return (
     <ParallaxProvider>
@@ -34,19 +29,10 @@ export default function Project({ project, moreProjects, preview }) {
       <Container>
         {/*<Header />*/}
         {router.isFallback ? (
-          <ProjectTitle>loading…</ProjectTitle>
+          <div>loading…</div>
         ) : (
           <>
-          <Intro />
-            <article>
-              <Head>
-                <title>
-                  yoooo
-                </title>
-              </Head>
-
-
-            </article>
+          <div>yo</div>
           </>
         )}
       </Container>
@@ -57,14 +43,14 @@ export default function Project({ project, moreProjects, preview }) {
 
 export async function getStaticProps({ params, preview }) {
   const data = await getAuthors(params.slug, preview)
-  const content = await markdownToHtml(data?.author?.content || '')
-
+  console.log("yo: " + data);
+  {/*const content = await markdownToHtml(data?.author?.content || '')*/}
   return {
     props: {
       preview: preview || null,
       author: {
         ...data?.author,
-        content,
+
       },
     },
   }
