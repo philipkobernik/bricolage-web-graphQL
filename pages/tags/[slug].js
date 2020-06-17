@@ -9,6 +9,7 @@ import AuthorName from '../../components/author-name'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
+import Loading from '../../components/loading'
 import Avatar from '../../components/avatar'
 import AuthorPicture from '../../components/author-picture'
 import MoreStories from '../../components/more-stories'
@@ -29,7 +30,7 @@ export default function Tag({ tag, projects, preview}) {
     <Layout preview={preview}>
       <Container>
         {router.isFallback ? (
-          <div>loading…</div>
+          <Loading>loading…</Loading>
         ) : (
           <>
           <Intro />

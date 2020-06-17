@@ -10,6 +10,7 @@ import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
 import Avatar from '../../components/avatar'
+import Loading from '../../components/loading'
 import AuthorPicture from '../../components/author-picture'
 import ArtistProjects from '../../components/artist-projects'
 import { CMS_NAME } from '../../lib/constants'
@@ -29,7 +30,7 @@ export default function Author({ author, projects, preview}) {
     <Layout preview={preview}>
       <Container>
         {router.isFallback ? (
-          <div>loading…</div>
+          <Loading>loading…</Loading>
         ) : (
           <>
           <Intro />
@@ -39,8 +40,8 @@ export default function Author({ author, projects, preview}) {
               {author.name} | bricolage
             </title>
           </Head>
-          <div className="grid grid-cols-1 md:grid-cols-4">
-          <div className="md:col-start-1 md:col-end-2 z-10 my-6 mr-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 mb-20">
+          <div className="md:col-start-1 md:col-end-2 z-10 mr-6">
             <div className="max-w-2xl mx-auto">
                 <div className="hidden md:block">
                   <AuthorPicture name={author.name} picture={author.picture} />
