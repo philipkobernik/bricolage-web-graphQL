@@ -11,7 +11,7 @@ import Head from 'next/head'
 import Intro from '../../components/intro'
 import Avatar from '../../components/avatar'
 import AuthorPicture from '../../components/author-picture'
-import MoreStories from '../../components/more-stories'
+import ArtistProjects from '../../components/artist-projects'
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import markdownStyles from '../../components/markdown-styles.module.css'
@@ -59,11 +59,11 @@ export default function Author({ author, projects, preview}) {
                     className={markdownStyles['markdown']}
                     dangerouslySetInnerHTML={{ __html: author.artistStatement }}
                   />
-                <div className="m-6 text-purple font-bold"> <a href={author.website}> {author.website} </a></div>
+                <div className="m-6 text-purple text-md"> <a href={author.website}> {author.website} </a></div>
               </div>
           </div>
           </article>
-          { projects.length > 0 && <MoreStories projects={projects} /> }
+          { projects.length > 0 && <ArtistProjects projects={projects} /> }
           </>
         )}
       </Container>
