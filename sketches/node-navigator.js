@@ -1,12 +1,8 @@
 let node_size = 100; //initial
 let spacing_distance = 0;
 
-let default_button;
-let hashtag_button;
 let nodes = [];
 let global_hashtags = [];
-
-let node_navi_state = 0;
 
 class Hashtag {
   constructor(p5_, name_) {
@@ -28,9 +24,6 @@ class Hashtag {
   display() {
 		this.p5.fill(0);
 		this.p5.noStroke();
-    //this.p5.textSize(this.textSize);
-    //this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-    //print("name: " + this.name + " x: " + this.position.x + " y: " +  this.position.y);
     this.p5.text(this.name, this.position.x, this.position.y);
   }
   
@@ -53,10 +46,7 @@ class Node {
 		//this.coverImage = this.p5.loadImage(coverImage_); //image object
 		this.title = title_; //string
 		this.authors = [];
-	//	for (var i = 0; i < authors_.; i++) {
 		this.authors.push(authors_); //array of strings
-		//}
-		// console.log(this.authors);
 		this.date = date_; //string
 		//this.shortDescription = shortDescription_; //string
 		this.project_description = project_description_; //string
@@ -80,16 +70,12 @@ class Node {
 
 		this.slug = slug_; //string
 
-		// for (var i = 0; i < imageGallery_.length; i++) {
-		// 	let img = this.p5.loadImage(imageGallery_[i]);
-		// 	this.imageGallery.push(  img  );
-		// }
-
 		// this.lab_affiliation = lab_affiliation_;
 
 		// set random initial positions
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance, this.p5.windowWidth-400 - spacing_distance), this.p5.random(spacing_distance, this.p5.height - spacing_distance)  );
-		this.velocity = this.p5.createVector(0, 0, 0);
+		this.final_position = this.p5.createVector(0, 0);
+		this.random_spread = this.p5.createVector(this.p5.random(-spacing_distance, spacing_distance), this.p5.random(-spacing_distance, spacing_distance));
 		this.size = node_size;
 		this.alpha = 255;
 		this.line_alpha = 50;
@@ -99,6 +85,8 @@ class Node {
 
 	//getters
 	getPosition() { return this.position; }
+	getFinalPosition() { return this.final_position; }
+	getRandomSpread() { return this.random_spread; }
 	getHashtags() { return this.hashtags; }
 	getLineAlpha() { return this.line_alpha; }
 	//getLabAffiliation() { return this.lab_affiliation; }
@@ -110,14 +98,16 @@ class Node {
 	setLineAlpha(l_a) { this.line_alpha = l_a; }
 	setClick() { this.is_clicked = !this.is_clicked; }
 	setPosition(p) { this.position = p }
+	setFinalPosition(p) { this.final_position = p; }
 
 	update() {
-		this.position.add(this.velocity);
-		this.velocity = this.p5.createVector(0);
-		
+		if (this.p5.round(this.position.mag()) != this.p5.round(this.final_position.mag())) {
+			var pos_difference = this.p5.createVector((this.final_position.x - this.position.x), (this.final_position.y - this.position.y));
+			pos_difference.normalize();
+			this.position.add(pos_difference);
+		}
+
 		if (this.is_clicked) {
-			// go to project page
-			// TO DO
 			window.open("/projects/" + this.slug);
 			this.is_clicked = false;
     } 
@@ -127,13 +117,8 @@ class Node {
 		this.p5.noStroke();
     this.p5.fill(this.color[0], this.color[1], this.color[2], this.alpha);
 		this.p5.rectMode(this.p5.CENTER);
-		//this.p5.image(this.coverImage, this.getPosition().x, this.getPosition().y, this.size, this.size);
 		this.p5.rect(this.getPosition().x, this.getPosition().y, this.size, this.size);
 	}
-
-	applyForce(vec) {
-    this.velocity.add(vec);
-  }
 }
 
 const setup = (p5, canvasParentRef,props) => {
@@ -148,14 +133,14 @@ const setup = (p5, canvasParentRef,props) => {
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].category, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
 	}
-	default_button = p5.createButton("default");
-	default_button.position(p5.windowWidth-100, 50 );
-	hashtag_button = p5.createButton("hashtag");
-	hashtag_button.position(p5.windowWidth-100, 70);
-
-	// console.log("length", global_hashtags.length);
-	for (var i = 0; i < global_hashtags.length; i++) {
-		// console.log(global_hashtags[i].getName());
+	for (var i = 0; i < nodes.length; i++) {
+		console.log(nodes[i].final_position);
+	}
+	for(var i = 0; i < nodes.length; i++){
+		gravitationalPull(p5, nodes[i]);
+	}
+	for (var i = 0; i < nodes.length; i++) {
+		console.log(nodes[i].final_position);
 	}
  }
 
@@ -163,30 +148,20 @@ const draw = p5 => {
 	p5.background(255);
 	p5.background(234, 227, 148, 100);
 	for (var i = 0; i < nodes.length; i++) {
-    for (var j = i+1; j < nodes.length; j++) {
-			//console.log(i,j)
+    for (var j = i; j < nodes.length; j++) {
       assignRelatedness(p5, nodes[i], nodes[j]);
     }
 	}
 
-	if (node_navi_state == 1) { //hashtag view
-		displayHashtags();
-
-		for (var i = 0; i < nodes.length; i++) {
-			gravitationalPull(p5, nodes[i]);
-		}
-	}
+	displayHashtags();
 	
 	for (var i = 0; i < nodes.length; i++) {
 		nodes[i].update();
 		nodes[i].display();
 		hover(p5, nodes[i]);
 	}
-
-	default_button.mousePressed(defaultView);
-	hashtag_button.mousePressed(hashtagView);
-
 }
+
 const windowResized = p5 => {
 	var amount_changed = p5.width;
 	p5.resizeCanvas(p5.windowWidth-400, 555);
@@ -199,15 +174,12 @@ const windowResized = p5 => {
 }
 
 const mousePressed = p5 => {
-	// var index = 0;
   for (var i = 0; i < nodes.length; i++) {
     if (p5.mouseX > nodes[i].getPosition().x - nodes[i].size / 2 &&
       p5.mouseX < nodes[i].getPosition().x + nodes[i].size / 2 &&
       p5.mouseY > nodes[i].getPosition().y - nodes[i].size / 2 &&
       p5.mouseY < nodes[i].getPosition().y + nodes[i].size / 2) {
       nodes[i].setClick();
-    }
-    else {
     }
 	}
 	
@@ -227,20 +199,13 @@ const mouseDragged = p5 => {
 const mouseReleased = p5 => {
   for (var i = 0; i < global_hashtags.length; i++) {
     if (global_hashtags[i].getDragged() == true) {
-      //global_hashtags[i].setPosition(createVector(mouseX, mouseY));
       global_hashtags[i].setDragged(false);
     }
-  }
-}
-
-function defaultView() {
-	// console.log("default view!");
-	node_navi_state = 0;
-}
-
-function hashtagView() {
-	// console.log("hashtag view!");
-	node_navi_state = 1;
+	}
+	
+	for (var i = 0; i < nodes.length; i++) {
+		gravitationalPull(p5, nodes[i]);
+	}
 }
 
 function displayHashtags() {
@@ -256,8 +221,6 @@ function hover(p5, p) {
     p5.mouseY > p.getPosition().y - p.getSize() / 2 &&
 		p5.mouseY < p.getPosition().y + p.getSize() / 2) 
 	{
-		//p5.textSize(16);
-		//p5.textAlign(p5.CENTER);
 		p5.fill(0);
 		p5.text(p.getTitle(), p.getPosition().x - p.getSize()/2, p.getPosition().y - (p.getSize()/2 + 5));
 		
@@ -296,11 +259,8 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 	// }
 
 	var nameCounter = 0;
-	// console.log("Authors", p2.getAuthors().length);
 	for (var i = 0; i < p2.getAuthors().length; i++) {
-		// console.log(p1.getAuthors(), p2.getAuthors());
 		if (p1.getAuthors().includes(p2.getAuthors()[i])) {
-			//print("match!");
 			nameCounter++;
 		}
 	}
@@ -318,25 +278,22 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 
 //this organizes the node position based on hashtag location
 function gravitationalPull(p5, p) {
-  // linear interpolation between node initial position (random) to the hashtag_position location +- some random number
-  var initialPos = p5.createVector(p.getPosition().x, p.getPosition().y);
-  //print(pos);
   var ht_array = p.getHashtags();
-
   var directionVector = p5.createVector(0);
+	var count = 0;
 
   for (var i = 0; i < ht_array.length; i++) {
     for (var j = 0; j < global_hashtags.length; j++) {
       var finalPos = p5.createVector(global_hashtags[j].getPosition().x, global_hashtags[j].getPosition().y);
       if (p5.match(global_hashtags[j].getName(), ht_array[i])) {
-        finalPos.sub(initialPos);
+				count++;
         directionVector.add(finalPos);
       }
     }
-  }
-  directionVector.normalize();
-  //added random jitter here
-  p.applyForce(directionVector.add(p5.createVector(p5.random(-3,3), p5.random(-3,3))));
+	}
+	directionVector.div(count); // MAY NOT BE NEEDED???
+	directionVector.add(p.getRandomSpread()); //this ensures that the projects won't go on top of one another
+	p.setFinalPosition(directionVector);
 }
 
 export { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized };
