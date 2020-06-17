@@ -4,23 +4,23 @@ import Container from '../../components/container'
 import Header from '../../components/header'
 import ProjectHeader from '../../components/project-header'
 import Layout from '../../components/layout'
-import { getallAuthorsWithSlug, getAuthors, getAllProjectsByAuthor } from '../../lib/api'
+import { getAllTagsWithSlug, getTags, getAllProjectsByTag } from '../../lib/api'
 import AuthorName from '../../components/author-name'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
 import Avatar from '../../components/avatar'
 import AuthorPicture from '../../components/author-picture'
-import ArtistProjects from '../../components/artist-projects'
+import MoreStories from '../../components/more-stories'
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import markdownStyles from '../../components/markdown-styles.module.css'
 import { ParallaxProvider } from 'react-scroll-parallax';
 
-export default function Author({ author, projects, preview}) {
-
+export default function Tag({ tag, projects, preview}) {
+  console.log(tag);
   const router = useRouter()
-  if (!router.isFallback && !author?.slug) {
+  if (!router.isFallback && !tag?.slug) {
     return <ErrorPage statusCode={404} />
   }
 
@@ -36,34 +36,27 @@ export default function Author({ author, projects, preview}) {
             <article>
           <Head>
             <title>
-              {author.name} | bricolage
+              {tag.name} | bricolage
             </title>
           </Head>
           <div className="grid grid-cols-1 md:grid-cols-4">
           <div className="md:col-start-1 md:col-end-2 z-10 my-6 mr-6">
             <div className="max-w-2xl mx-auto">
                 <div className="hidden md:block">
-                  <AuthorPicture name={author.name} picture={author.picture} />
+                  <ProjectTitle>{tag.name}</ProjectTitle>
                 </div>
 
 
                 <div className="block md:hidden mb-6 text-blue">
-                  <Avatar name={author.name}  picture={author.picture} slug={author.slug}/>
+                  <ProjectTitle>{tag.name}</ProjectTitle>
                 </div>
 
               </div>
-          </div>
-
-              <div className="md:col-start-2 md:col-end-5 z-10 shadow-xl py-6 mb-40">
-                <div
-                    className={markdownStyles['markdown']}
-                    dangerouslySetInnerHTML={{ __html: author.artistStatement }}
-                  />
-                <div className="m-6 text-purple text-md"> <a className="hover:underline" href={author.website}> {author.website} </a></div>
-              </div>
+            </div>
           </div>
           </article>
-          { projects.length > 0 && <ArtistProjects projects={projects} /> }
+
+          { projects.length > 0 && <MoreStories projects={projects} /> }
           </>
         )}
       </Container>
@@ -73,22 +66,22 @@ export default function Author({ author, projects, preview}) {
 }
 
 export async function getStaticProps({ params, preview }) {
-  const data = await getAuthors(params.slug, preview)
-  const authorProjects = await getAllProjectsByAuthor(data?.author?.id)
+  const data = await getTags(params.slug, preview)
+  const tagProjects = await getAllProjectsByTag(data?.tag?.id)
 
   return {
     props: {
-      author: data?.author,
-      projects: authorProjects?.allProjects,
+      tag: data?.tag,
+      projects: tagProjects?.allProjects,
       preview: preview || null
     },
   }
 }
 
 export async function getStaticPaths() {
-  const allAuthors = await getallAuthorsWithSlug()
+  const allTags = await getAllTagsWithSlug()
   return {
-    paths: allAuthors?.map(author => `/authors/${author.slug}`) || [],
+    paths: allTags?.map(tag => `/tags/${tag.slug}`) || [],
     fallback: true,
   }
 }

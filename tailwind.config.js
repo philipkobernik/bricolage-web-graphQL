@@ -2,8 +2,9 @@ module.exports = {
   theme: {
     fontFamily: {
       'sans': ['Barlow', 'Arial', 'sans-serif'],
+      'mono': ['"Press Start 2P"', 'mono'],
       display: ['Barlow', 'sans-serif'],
-      body: ['Graphik', 'sans-serif'],
+      body: ['Barlow', 'sans-serif'],
     },
     extend: {
       colors: {
