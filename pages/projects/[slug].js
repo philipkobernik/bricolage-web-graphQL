@@ -15,21 +15,24 @@ import Intro from '../../components/intro'
 
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 
 
 export default function Project({ project, moreProjects, preview, allProjects }) {
-  console.log("SLUG", allProjects)
+
   const router = useRouter()
   if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
   }
+
   return (
+    <ParallaxProvider>
     <Layout preview={preview}>
       <Container>
         {/*<Header />*/}
         {router.isFallback ? (
-          <ProjectTitle>Loading…</ProjectTitle>
+          <ProjectTitle>loading…</ProjectTitle>
         ) : (
           <>
           <Intro projects = {allProjects}/>
@@ -48,15 +51,23 @@ export default function Project({ project, moreProjects, preview, allProjects })
                 author={project.author}
                 tags={project.tags}
               />
-              <ProjectBody content={project.content} />
+
+              <ProjectBody
+              title={project.title}
+              coverImage={project.coverImage}
+              date={project.date}
+              author={project.author}
+              tags={project.tags}
+              content={project.content}
+              />
             </article>
-            <SectionSeparator />
             {project.imageGallery.length > 0 && <ImageGallery images={project.imageGallery} />}
             {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
           </>
         )}
       </Container>
     </Layout>
+    </ParallaxProvider>
   )
 }
 
