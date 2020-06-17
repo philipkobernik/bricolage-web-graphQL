@@ -1,4 +1,7 @@
-export default function Avatar({ name, picture }) {
+import Link from 'next/link'
+
+export default function Avatar({ name, picture, slug }) {
+  console.log(slug);
   return (
     <div className="flex items-center">
       <img
@@ -6,7 +9,7 @@ export default function Avatar({ name, picture }) {
         className="w-12 h-12 squared-full mr-4"
         alt={name}
       />
-      <div className="text-xl font-bold">{name}</div>
+      <div className="text-xl font-bold"><Link as={`/authors/${slug}`} href="/authors/[slug]"><a>{name}</a></Link></div>
     </div>
   )
 }

@@ -9,6 +9,7 @@ export default function ProjectPreview({
   date,
   excerpt,
   author,
+  authorSlug,
   slug,
 }) {
   return (
@@ -27,7 +28,7 @@ export default function ProjectPreview({
           </Link>
         </h3>
         <p className="w-full text-lg leading-relaxed mb-4">{excerpt}</p>
-        <Avatar name={author.name} picture={author.picture} />
+        <Avatar name={author.name} picture={author.picture} slug={authorSlug}/>
         <div className="w-full text-lg mb-4">
           <Date dateString={date} />
         </div>
