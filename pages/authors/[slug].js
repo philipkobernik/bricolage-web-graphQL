@@ -19,13 +19,14 @@ import { ParallaxProvider } from 'react-scroll-parallax';
 
 
 
-export default function Author({ author, preview}) {
+export default function Author({ author, projects, preview}) {
 
   const router = useRouter()
   if (!router.isFallback && !author?.slug) {
     return <ErrorPage statusCode={404} />
   }
 
+  console.log(projects)
 
   return (
     <ParallaxProvider>
@@ -66,7 +67,7 @@ export default function Author({ author, preview}) {
               </div>
           </div>
           </article>
-          {/*moreProjects.length > 0 && <MoreStories projects={moreProjects} />*/}
+          {/*projects.length > 0 && <MoreStories projects={projects} />*/}
           </>
         )}
       </Container>
@@ -77,12 +78,16 @@ export default function Author({ author, preview}) {
 
 export async function getStaticProps({ params, preview }) {
   const data = await getAuthors(params.slug, preview)
+  //const pro = await getallProjectsByAuthor(data?.author?.id)
+  //const project = await getProjectsByAuthor(params.id)
   //const projects = await getProjectsByAuthor(data.id)
+  //const pro = await getAllProjectsForHome(preview)
 
   return {
     props: {
       preview: preview || null,
       author: data?.author,
+      //projects: {...pro?.project},
     },
   }
 }
