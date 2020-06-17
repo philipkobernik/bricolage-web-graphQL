@@ -109,6 +109,7 @@ class Node {
 	//setters
 	setLineAlpha(l_a) { this.line_alpha = l_a; }
 	setClick() { this.is_clicked = !this.is_clicked; }
+	setPosition(p) { this.position = p }
 
 	update() {
 		this.position.add(this.velocity);
@@ -143,13 +144,14 @@ const setup = (p5, canvasParentRef,props) => {
 	node_size = node_size/props.p.length; // the more projects we add, the smaller the nodes will become
 	spacing_distance = node_size/2 + 20;
 	for(var i =0; i< props.p.length; i++){
-		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].tags, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
+		// switched props.p[i].tags with props.p[i].category
+		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].category, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
 	}
-	default_button = p5.createButton("default view");
-	default_button.position(p5.windowWidth - 30, p5.height + 65);
-	hashtag_button = p5.createButton("hashtag view");
-	hashtag_button.position(p5.windowWidth - 30, p5.height + 90);
+	default_button = p5.createButton("default");
+	default_button.position(p5.windowWidth-100, 50 );
+	hashtag_button = p5.createButton("hashtag");
+	hashtag_button.position(p5.windowWidth-100, 70);
 
 	// console.log("length", global_hashtags.length);
 	for (var i = 0; i < global_hashtags.length; i++) {
@@ -186,8 +188,15 @@ const draw = p5 => {
 
 }
 const windowResized = p5 => {
+	var amount_changed = p5.width;
 	p5.resizeCanvas(p5.windowWidth-400, 555);
-  }
+	amount_changed -= p5.width;
+	for(var i = 0; i < nodes.length; i++){
+		console.log(nodes[i].getPosition().x, amount_changed);
+		var reset_position = p5.createVector(nodes[i].getPosition().x-amount_changed, nodes[i].getPosition().y);
+		nodes[i].setPosition(reset_position);
+	}
+}
 
 const mousePressed = p5 => {
 	// var index = 0;
@@ -326,7 +335,8 @@ function gravitationalPull(p5, p) {
     }
   }
   directionVector.normalize();
-  p.applyForce(directionVector);
+  //added random jitter here
+  p.applyForce(directionVector.add(p5.createVector(p5.random(-3,3), p5.random(-3,3))));
 }
 
 export { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized };
