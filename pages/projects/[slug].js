@@ -26,7 +26,6 @@ export default function Project({ project, moreProjects, preview }) {
   if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
   }
-  console.log(project)
 
   return (
     <ParallaxProvider>

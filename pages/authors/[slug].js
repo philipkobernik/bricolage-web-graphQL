@@ -4,20 +4,18 @@ import Container from '../../components/container'
 import Header from '../../components/header'
 import ProjectHeader from '../../components/project-header'
 import Layout from '../../components/layout'
-import { getallAuthorsWithSlug, getAuthors } from '../../lib/api'
+import { getallAuthorsWithSlug, getAuthors, getAllProjectsByAuthor } from '../../lib/api'
 import AuthorName from '../../components/author-name'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
 import Avatar from '../../components/avatar'
 import AuthorPicture from '../../components/author-picture'
-
+import MoreStories from '../../components/more-stories'
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import markdownStyles from '../../components/markdown-styles.module.css'
 import { ParallaxProvider } from 'react-scroll-parallax';
-
-
 
 export default function Author({ author, projects, preview}) {
 
@@ -25,8 +23,6 @@ export default function Author({ author, projects, preview}) {
   if (!router.isFallback && !author?.slug) {
     return <ErrorPage statusCode={404} />
   }
-
-  console.log(projects)
 
   return (
     <ParallaxProvider>
@@ -40,7 +36,7 @@ export default function Author({ author, projects, preview}) {
             <article>
           <Head>
             <title>
-              {author.name} | Next.js Blog Example with {CMS_NAME}
+              {author.name} | bricolage
             </title>
           </Head>
           <div className="grid grid-cols-1 md:grid-cols-4">
@@ -67,7 +63,7 @@ export default function Author({ author, projects, preview}) {
               </div>
           </div>
           </article>
-          {/*projects.length > 0 && <MoreStories projects={projects} />*/}
+          { projects.length > 0 && <MoreStories projects={projects} /> }
           </>
         )}
       </Container>
@@ -78,16 +74,13 @@ export default function Author({ author, projects, preview}) {
 
 export async function getStaticProps({ params, preview }) {
   const data = await getAuthors(params.slug, preview)
-  //const pro = await getallProjectsByAuthor(data?.author?.id)
-  //const project = await getProjectsByAuthor(params.id)
-  //const projects = await getProjectsByAuthor(data.id)
-  //const pro = await getAllProjectsForHome(preview)
+  const authorProjects = await getAllProjectsByAuthor(data?.author?.id)
 
   return {
     props: {
-      preview: preview || null,
       author: data?.author,
-      //projects: {...pro?.project},
+      projects: authorProjects?.allProjects,
+      preview: preview || null
     },
   }
 }
