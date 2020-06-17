@@ -81,6 +81,7 @@ class Node {
 		this.line_alpha = 50;
 		this.color = [50, 124, 155];
 		this.is_clicked = false; //are we in project mode or homepage mode?
+		this.has_reached_final_pos = false;
 	}
 
 	//getters
@@ -93,18 +94,25 @@ class Node {
 	getTitle() { return this.title; }
 	getAuthors() { return this.authors; }
 	getSize() { return this.size; }
+	getFinalBoolean() { return this.has_reached_final_pos; }
 
 	//setters
 	setLineAlpha(l_a) { this.line_alpha = l_a; }
 	setClick() { this.is_clicked = !this.is_clicked; }
 	setPosition(p) { this.position = p }
 	setFinalPosition(p) { this.final_position = p; }
+	setFinalBoolean() { this.has_reached_final_pos = !this.has_reached_final_pos;}
 
 	update() {
 		if (this.p5.round(this.position.mag()) != this.p5.round(this.final_position.mag())) {
 			var pos_difference = this.p5.createVector((this.final_position.x - this.position.x), (this.final_position.y - this.position.y));
 			pos_difference.normalize();
 			this.position.add(pos_difference);
+		} 
+		//if we want random jittering enabled
+		else {
+			this.random_spread = this.p5.createVector(this.p5.random(-3, 3), this.p5.random(-3, 3));
+			this.final_position.add(this.random_spread);
 		}
 
 		if (this.is_clicked) {
@@ -278,6 +286,7 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 
 //this organizes the node position based on hashtag location
 function gravitationalPull(p5, p) {
+	console.log("pulling!");
   var ht_array = p.getHashtags();
   var directionVector = p5.createVector(0);
 	var count = 0;
