@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
 export default function Avatar({ name, picture, slug }) {
-  console.log(slug);
   return (
     <div className="flex items-center">
       <img
