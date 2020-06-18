@@ -82,7 +82,7 @@ export async function getStaticProps({ params, preview }) {
 }
 
 export async function getStaticPaths() {
-  const allAuthors = await getallAuthorsWithSlug()
+  const allAuthors = await getAllAuthorsWithSlug()
   return {
     paths: allAuthors?.map(author => `/authors/${author.slug}`) || [],
     fallback: true,
