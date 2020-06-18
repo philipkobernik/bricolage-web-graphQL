@@ -12,7 +12,6 @@ import markdownToHtml from '../../lib/markdownToHtml'
 import { ParallaxProvider } from 'react-scroll-parallax';
 
 export default function Tag({ tag, projects, preview}) {
-  console.log(tag);
   const router = useRouter()
   if (!router.isFallback && !tag?.slug) {
     return <ErrorPage statusCode={404} />
