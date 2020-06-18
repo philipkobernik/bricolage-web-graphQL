@@ -11,7 +11,7 @@ class Hashtag {
 		this.textSize = 15;
 		// TO DO: Fix overlapping
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance * 1.5, this.p5.width - spacing_distance * 1.5), this.p5.random(spacing_distance * 1.5, this.p5.height - spacing_distance * 1.5)  );
-    this.isDragged = false;
+		this.isDragged = false;
   }
   
   getName() { return this.name; }
@@ -35,7 +35,8 @@ class Hashtag {
     {
       this.isDragged = true;
     }
-  }
+	}
+	
 }
 
 class Node {
@@ -134,6 +135,24 @@ class Node {
 	}
 }
 
+function repositionHashtags(p5) {
+	var count = global_hashtags.length;
+	var xAmount = (p5.windowWidth - 400 - 4 * spacing_distance) / count;
+	var yAmount = (555 - 4 * spacing_distance) / count;
+	console.log(xAmount);
+	console.log(yAmount);
+	var xP = spacing_distance;
+	var yP = spacing_distance;
+	for (var i = 0; i < global_hashtags.length; i++) {
+		var x = p5.random(xP, xP + xAmount);
+		xP += xAmount;
+		var y = p5.random(yP, yP + yAmount);
+		yP += yAmount;
+
+		global_hashtags[i].setPosition(p5.createVector(x, y));
+	}
+}
+
 const setup = (p5, canvasParentRef,props) => {
   p5.createCanvas(p5.windowWidth-400, 555).parent(canvasParentRef);
   p5.background(255);
@@ -141,11 +160,12 @@ const setup = (p5, canvasParentRef,props) => {
 	//console.log(props);
 	node_size = node_size/props.p.length; // the more projects we add, the smaller the nodes will become
 	spacing_distance = node_size/2 + 20;
-	for(var i =0; i< props.p.length; i++){
+	for(var i = 0; i < props.p.length; i++){
 		// switched props.p[i].tags with props.p[i].category
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].category, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
 	}
+	repositionHashtags(p5);
 	for(var i = 0; i < nodes.length; i++){
 		gravitationalPull(p5, nodes[i]);
 	}
