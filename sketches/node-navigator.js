@@ -4,6 +4,8 @@ let spacing_distance = 0;
 let nodes = [];
 let global_hashtags = [];
 
+let font = "";
+
 class Hashtag {
   constructor(p5_, name_) {
 		this.p5 = p5_;
@@ -24,6 +26,7 @@ class Hashtag {
   display() {
 		this.p5.fill(0);
 		this.p5.noStroke();
+		this.p5.textFont(font, this.textSize);
     this.p5.text(this.name, this.position.x, this.position.y);
   }
   
@@ -77,14 +80,14 @@ class Node {
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance, this.p5.windowWidth-400 - spacing_distance), this.p5.random(spacing_distance, this.p5.height - spacing_distance)  );
 		this.final_position = this.p5.createVector(0, 0);
 		this.random_spread = this.p5.createVector(this.p5.random(-spacing_distance, spacing_distance), this.p5.random(-spacing_distance, spacing_distance));
-		this.size = node_size;
+		this.size = node_size * 2;
 		this.alpha = 255;
 		this.line_alpha = 50;
 		this.color = [50, 124, 155];
 		this.is_clicked = false; //are we in project mode or homepage mode?
 		this.has_reached_final_pos = false;
 
-		this.speed = node_size;
+		this.speed = node_size * 0.5;
 	}
 
 	//getters
@@ -116,9 +119,13 @@ class Node {
 		} 
 		//if we want random jittering enabled
 		else {
-			this.random_spread = this.p5.createVector(this.p5.int(this.p5.random(-2, 2)), this.p5.int(this.p5.random(-2, 2)));
-			this.random_spread.mult(this.speed);
-			this.final_position.add(this.random_spread);
+			//add probability of movement
+			var prob = this.p5.random(0, 1);
+			if (prob >= 0.9) {
+				this.random_spread = this.p5.createVector(this.p5.int(this.p5.random(-2, 2)), this.p5.int(this.p5.random(-2, 2)));
+				this.random_spread.mult(this.speed);
+				this.final_position.add(this.random_spread);
+			}
 		}
 
 		if (this.is_clicked) {
@@ -157,6 +164,9 @@ const setup = (p5, canvasParentRef,props) => {
   p5.createCanvas(p5.windowWidth-400, 555).parent(canvasParentRef);
   p5.background(255);
 	p5.noStroke();
+	//font = p5.loadFont("https://fonts.google.com/specimen/Press+Start+2P");
+	font = p5.loadFont('public/fonts/PressStart2P-Regular.ttf');
+
 	//console.log(props);
 	node_size = node_size/props.p.length; // the more projects we add, the smaller the nodes will become
 	spacing_distance = node_size/2 + 20;
@@ -251,6 +261,7 @@ function hover(p5, p) {
 		p5.mouseY < p.getPosition().y + p.getSize() / 2) 
 	{
 		p5.fill(0);
+		p5.textFont(font, spacing_distance);
 		p5.text(p.getTitle(), p.getPosition().x - p.getSize()/2, p.getPosition().y - (p.getSize()/2 + 5));
 		
 		p.setLineAlpha(255);
@@ -341,6 +352,8 @@ function boundaryCheck(p5) {
 			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-1,-5))));
 		}
 	}
+
+	// add bouncing off of each other here
 }
 
 export { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized };
