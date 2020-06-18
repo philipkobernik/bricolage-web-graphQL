@@ -63,7 +63,7 @@ class Node {
 				}
 			}
 			if (!found) {
-				console.log("new hashtag added");
+				//console.log("new hashtag added");
 				global_hashtags.push(new Hashtag(this.p5, hashtags_[i]["name"]));
 			}
 		}
@@ -136,7 +136,7 @@ const setup = (p5, canvasParentRef,props) => {
   p5.createCanvas(p5.windowWidth-400, 555).parent(canvasParentRef);
   p5.background(255);
 	p5.noStroke();
-	console.log(props);
+	//console.log(props);
 	node_size = node_size/props.p.length; // the more projects we add, the smaller the nodes will become
 	spacing_distance = node_size/2 + 20;
 	for(var i =0; i< props.p.length; i++){
@@ -144,14 +144,8 @@ const setup = (p5, canvasParentRef,props) => {
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].category, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
 		nodes.push(n);
 	}
-	for (var i = 0; i < nodes.length; i++) {
-		console.log(nodes[i].final_position);
-	}
 	for(var i = 0; i < nodes.length; i++){
 		gravitationalPull(p5, nodes[i]);
-	}
-	for (var i = 0; i < nodes.length; i++) {
-		console.log(nodes[i].final_position);
 	}
  }
 
@@ -178,7 +172,7 @@ const windowResized = p5 => {
 	p5.resizeCanvas(p5.windowWidth-400, 555);
 	amount_changed -= p5.width;
 	for(var i = 0; i < nodes.length; i++){
-		console.log(nodes[i].getPosition().x, amount_changed);
+		//console.log(nodes[i].getPosition().x, amount_changed);
 		var reset_position = p5.createVector(nodes[i].getPosition().x-amount_changed, nodes[i].getPosition().y);
 		nodes[i].setPosition(reset_position);
 	}
@@ -289,7 +283,7 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 
 //this organizes the node position based on hashtag location
 function gravitationalPull(p5, p) {
-	console.log("pulling!");
+	//console.log("pulling!");
   var ht_array = p.getHashtags();
   var directionVector = p5.createVector(0);
 	var count = 0;
