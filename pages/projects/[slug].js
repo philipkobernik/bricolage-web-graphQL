@@ -10,8 +10,10 @@ import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
 import { getallProjectsWithSlug, getProjectAndMoreProjects } from '../../lib/api'
 import ProjectTitle from '../../components/project-title'
+import Loading from '../../components/loading'
 import Head from 'next/head'
 import Intro from '../../components/intro'
+import VideoPlayer from '../../components/video-player'
 
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
@@ -32,7 +34,7 @@ export default function Project({ project, moreProjects, preview }) {
       <Container>
         {/*<Header />*/}
         {router.isFallback ? (
-          <ProjectTitle>loading…</ProjectTitle>
+          <Loading>loading…</Loading>
         ) : (
           <>
           <Intro />
@@ -61,6 +63,7 @@ export default function Project({ project, moreProjects, preview }) {
               content={project.content}
               />
             </article>
+            {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}
             {project.imageGallery.length > 0 && <ImageGallery images={project.imageGallery} />}
             {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
           </>

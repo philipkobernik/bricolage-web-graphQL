@@ -61,7 +61,7 @@ class Particle {
 }
 
 const setup = (p5, canvasParentRef) => {
-  p5.createCanvas(185, 185).parent(canvasParentRef);
+  p5.createCanvas(182, 182).parent(canvasParentRef);
   p5.background(255);
   p5.noStroke();
   word();

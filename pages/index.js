@@ -41,8 +41,7 @@ export default function Index({ allProjects }) {
 export async function getStaticProps({ preview }) {
   const allProjects = await getAllProjectsForHome(preview)
   return {
+
     props: { allProjects },
   }
 }
-
-

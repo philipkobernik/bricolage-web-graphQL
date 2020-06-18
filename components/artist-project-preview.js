@@ -3,7 +3,7 @@ import Date from '../components/date'
 import CoverImage from './cover-image'
 import Link from 'next/link'
 
-export default function ProjectPreview({
+export default function ArtistProjectPreview({
   title,
   coverImage,
   date,
@@ -13,23 +13,22 @@ export default function ProjectPreview({
   slug,
 }) {
   return (
-    <div class="flex">
-      <div className="w-1/3 pr-8">
+    <div class="grid grid-cols-1 md:grid-cols-4">
+      <div className="md:col-start-1 md:col-end-2 mr-6">
         <CoverImage
           slug={slug}
           title={title}
           responsiveImage={coverImage.responsiveImage}
         />
       </div>
-        <div class="flex-wrap">
+        <div class="md:col-start-2 md:col-end-5 flex-wrap shadow-xl px-4">
         <h3 className="w-full text-3xl mb-4 leading-snug">
           <Link as={`/projects/${slug}`} href="/projects/[slug]">
             <a className="hover:underline">{title}</a>
           </Link>
         </h3>
-        <p className="w-full text-lg leading-relaxed mb-4">{excerpt}</p>
-        <Avatar name={author.name} picture={author.picture} slug={authorSlug}/>
-        <div className="w-full text-lg mb-4">
+        <p className="w-full text-lg leading-relaxed mb-1">{excerpt}</p>
+        <div className="w-full text-md text-purple">
           <Date dateString={date} />
         </div>
       </div>
