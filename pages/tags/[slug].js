@@ -1,21 +1,14 @@
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Container from '../../components/container'
-import Header from '../../components/header'
-import ProjectHeader from '../../components/project-header'
 import Layout from '../../components/layout'
 import { getAllTagsWithSlug, getTags, getAllProjectsByTag } from '../../lib/api'
-import AuthorName from '../../components/author-name'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
 import Loading from '../../components/loading'
-import Avatar from '../../components/avatar'
-import AuthorPicture from '../../components/author-picture'
 import MoreStories from '../../components/more-stories'
-import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
-import markdownStyles from '../../components/markdown-styles.module.css'
 import { ParallaxProvider } from 'react-scroll-parallax';
 
 export default function Tag({ tag, projects, preview}) {
