@@ -5,12 +5,13 @@ let nodes = [];
 let global_hashtags = [];
 
 let font = "";
+let hover_font = "";
 
 class Hashtag {
   constructor(p5_, name_) {
 		this.p5 = p5_;
     this.name = name_;
-		this.textSize = 15;
+		this.textSize = 12;
 		// TO DO: Fix overlapping
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance * 1.5, this.p5.width - spacing_distance * 1.5), this.p5.random(spacing_distance * 1.5, this.p5.height - spacing_distance * 1.5)  );
 		this.isDragged = false;
@@ -24,7 +25,7 @@ class Hashtag {
 	setDragged(b) {this.isDragged = b; }
   
   display() {
-		this.p5.fill(0);
+		this.p5.fill(211, 103, 60);
 		this.p5.noStroke();
 		this.p5.textFont(font, this.textSize);
     this.p5.text(this.name, this.position.x, this.position.y);
@@ -160,14 +161,14 @@ function repositionHashtags(p5) {
 	}
 }
 
-const setup = (p5, canvasParentRef,props) => {
+const setup = (p5, canvasParentRef, props) => {
   p5.createCanvas(p5.windowWidth-400, 555).parent(canvasParentRef);
   p5.background(255);
 	p5.noStroke();
 	//font = p5.loadFont("https://fonts.google.com/specimen/Press+Start+2P");
-	font = p5.loadFont('public/fonts/PressStart2P-Regular.ttf');
+	font = p5.loadFont('/fonts/PressStart2P-Regular.ttf');
+	hover_font = p5.loadFont('/fonts/Barlow-Regular.ttf');
 
-	//console.log(props);
 	node_size = node_size/props.p.length; // the more projects we add, the smaller the nodes will become
 	spacing_distance = node_size/2 + 20;
 	for(var i = 0; i < props.p.length; i++){
@@ -260,8 +261,10 @@ function hover(p5, p) {
     p5.mouseY > p.getPosition().y - p.getSize() / 2 &&
 		p5.mouseY < p.getPosition().y + p.getSize() / 2) 
 	{
+		//p5.background(255);
+		//p5.background(234, 227, 148, 100);
 		p5.fill(0);
-		p5.textFont(font, spacing_distance);
+		p5.textFont(hover_font, 15);
 		p5.text(p.getTitle(), p.getPosition().x - p.getSize()/2, p.getPosition().y - (p.getSize()/2 + 5));
 		
 		p.setLineAlpha(255);
@@ -354,6 +357,8 @@ function boundaryCheck(p5) {
 	}
 
 	// add bouncing off of each other here
+
+	//larger node collision areas
 }
 
 export { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized };

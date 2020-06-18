@@ -4,7 +4,7 @@ import { Parallax } from 'react-scroll-parallax';
 import BricolageNodeNavigator from '../components/bricolage-nodeNavigator'
 
 export default function Intro({projects}) {
-  console.log("intro", projects);
+  //console.log("intro", projects);
   return (
     <section className="flex-col md:flex-row flex items-center md:justify-between mt-16 mb-16 md:mb-12">
 
