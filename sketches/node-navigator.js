@@ -82,6 +82,8 @@ class Node {
 		this.color = [50, 124, 155];
 		this.is_clicked = false; //are we in project mode or homepage mode?
 		this.has_reached_final_pos = false;
+
+		this.speed = node_size;
 	}
 
 	//getters
@@ -111,7 +113,8 @@ class Node {
 		} 
 		//if we want random jittering enabled
 		else {
-			this.random_spread = this.p5.createVector(this.p5.random(-3, 3), this.p5.random(-3, 3));
+			this.random_spread = this.p5.createVector(this.p5.int(this.p5.random(-2, 2)), this.p5.int(this.p5.random(-2, 2)));
+			this.random_spread.mult(this.speed);
 			this.final_position.add(this.random_spread);
 		}
 
