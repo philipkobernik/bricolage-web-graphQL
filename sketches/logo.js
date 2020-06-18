@@ -99,7 +99,10 @@ const draw = p5 => {
 
 }
 
-const mousePressed = () => {
+const mousePressed = (p5) => {
+  if(isHovering(p5.mouseX, p5.mouseY)){
+    window.open("/","_self");
+  }
   toggle = !toggle;
 }
 
