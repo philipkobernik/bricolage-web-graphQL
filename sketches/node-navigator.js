@@ -16,10 +16,10 @@ class Hashtag {
   
   getName() { return this.name; }
   getPosition() { return this.position; }
-  getDragged() {return this.isDragged; }
-  
+	getDragged() {return this.isDragged; }
+	
   setPosition(p) { this.position = p; }
-  setDragged(b) {this.isDragged = b; }
+	setDragged(b) {this.isDragged = b; }
   
   display() {
 		this.p5.fill(0);
@@ -97,6 +97,7 @@ class Node {
 	getAuthors() { return this.authors; }
 	getSize() { return this.size; }
 	getFinalBoolean() { return this.has_reached_final_pos; }
+	getSpeed() { return this.speed; }
 
 	//setters
 	setLineAlpha(l_a) { this.line_alpha = l_a; }
@@ -104,6 +105,7 @@ class Node {
 	setPosition(p) { this.position = p }
 	setFinalPosition(p) { this.final_position = p; }
 	setFinalBoolean() { this.has_reached_final_pos = !this.has_reached_final_pos;}
+	setSpeed(s) { this.speed = s; }
 
 	update() {
 		if (this.p5.round(this.position.mag()) != this.p5.round(this.final_position.mag())) {
@@ -165,6 +167,8 @@ const draw = p5 => {
 		nodes[i].display();
 		hover(p5, nodes[i]);
 	}
+
+	boundaryCheck(p5);
 }
 
 const windowResized = p5 => {
@@ -300,6 +304,23 @@ function gravitationalPull(p5, p) {
 	directionVector.div(count); // MAY NOT BE NEEDED???
 	directionVector.add(p.getRandomSpread()); //this ensures that the projects won't go on top of one another
 	p.setFinalPosition(directionVector);
+}
+
+function boundaryCheck(p5) {
+	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i].getPosition().x <= spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(p5.random(1,5), p5.random(-2, 2))));
+		}
+		if (nodes[i].getPosition().x >= p5.width - spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(p5.random(-1,-5), p5.random(-2, 2))));
+		}
+		if (nodes[i].getPosition().y <= spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(p5.random(-2, 2), p5.random(1,5))));
+		}
+		if (nodes[i].getPosition().y >= 555 - spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-1,-5))));
+		}
+	}
 }
 
 export { setup, draw, mousePressed, mouseDragged, mouseReleased, windowResized };
