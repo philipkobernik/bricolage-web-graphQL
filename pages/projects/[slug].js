@@ -22,7 +22,6 @@ import { ParallaxProvider } from 'react-scroll-parallax';
 
 
 export default function Project({ project, moreProjects, preview }) {
-
   const router = useRouter()
   if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
@@ -59,6 +58,8 @@ export default function Project({ project, moreProjects, preview }) {
               coverImage={project.coverImage}
               date={project.date}
               author={project.author}
+              collaborators={project.collaborators}
+              lab = {project.labAffiliation.length > 0 && project.labAffiliation[0].name}
               tags={project.tags}
               content={project.content}
               />
