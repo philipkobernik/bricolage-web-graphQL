@@ -388,6 +388,41 @@ function boundaryCheck(p5) {
 
 	// add bouncing off of each other here
 
+	var collision_radius = node_size * 2; 
+	for (var i = 0; i < nodes.length; i++) {
+		for (var j = i; j < nodes.length; j++) {
+			let nRightEdge = nodes[i].getPosition().x + collision_radius/2;
+			let nLeftEdge = nodes[i].getPosition().x - collision_radius/2;
+			let nDownEdge = nodes[i].getPosition().y + collision_radius/2;
+			let nUpEdge = nodes[i].getPosition().y - collision_radius/2; 
+			let nodeRightEdge = nodes[j].getPosition().x + collision_radius/2;
+			let nodeLeftEdge = nodes[j].getPosition().x - collision_radius/2;
+			let nodeDownEdge = nodes[j].getPosition().y + collision_radius/2;
+			let nodeUpEdge = nodes[j].getPosition().y - collision_radius/2; 
+			if (nRightEdge > nodeLeftEdge) {
+				if ( (nUpEdge > nodeUpEdge && nUpEdge < nodeDownEdge) || (nDownEdge < nodeDownEdge && nDownEdge > nodeUpEdge) ) {
+					
+					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
+				}
+			} 
+			if (nLeftEdge < nodeRightEdge) {
+				if ( (nUpEdge > nodeUpEdge && nUpEdge < nodeDownEdge) || (nDownEdge < nodeDownEdge && nDownEdge > nodeUpEdge) ) {
+					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
+				}
+			} 
+			if (nUpEdge < nodeUpEdge) {
+				if ( (nLeftEdge < nodeRightEdge && nLeftEdge > nodeLeftEdge) || (nRightEdge < nodeRightEdge && nRightEdge > nodeLeftEdge) ) {
+					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
+				}
+			} 
+			if (nDownEdge > nodeDownEdge) {
+				if ( (nLeftEdge <= nodeRightEdge && nLeftEdge > nodeLeftEdge) || (nRightEdge < nodeRightEdge && nRightEdge > nodeLeftEdge) ) {
+					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
+				}
+			}
+		}
+	}
+
 	//larger node collision areas
 }
 
