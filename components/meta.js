@@ -1,17 +1,8 @@
 import Head from 'next/head'
 import { CMS_NAME, HOME_OG_IMAGE_URL } from '../lib/constants'
 
-const defaultImageUrl = '/images/bricolage_home_page.jpg';
-const defaultTitle = "bricolage";
-const defaultDescription = "a digital gallery and archive of works created by members of the Media Arts and Techology graduate program @ UC Santa Barbara";
-const defaultPageUrl = "https://bricolage.mat.ucsb.edu";
 
-export default function Meta({
-  ogImageUrl=defaultImageUrl,
-  ogTitle=defaultTitle,
-  ogDescription=defaultDescription,
-  ogPageUrl=defaultPageUrl
-}) {
+export default function Meta({ ogImageUrl, ogTitle, ogDescription, ogPageUrl }) {
   return (
     <Head>
       <link

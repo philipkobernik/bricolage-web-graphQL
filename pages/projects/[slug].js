@@ -30,46 +30,54 @@ export default function Project({ project, moreProjects, preview }) {
 
   return (
     <ParallaxProvider>
-    <Layout preview={preview}>
-      <Container>
-        {/*<Header />*/}
-        {router.isFallback ? (
-          <Loading>loading…</Loading>
-        ) : (
-          <>
-          <Intro />
-            <article>
-              <Head>
-                <title>
-                  {project.title} | Next.js Blog Example with {CMS_NAME}
-                </title>
-                <meta property="og:image" content={project.ogImage.url} />
-              </Head>
+    {router.isFallback ? (
+      <Loading>loading…</Loading>
+    ) : (
+      <Layout
+        preview={preview}
+        ogImageUrl={project.coverImage?.responsiveImage}
+        ogTitle={project.title}
+        ogDescription={project.excerpt}
+        ogPageUrl={router.pathname}
+      >
+        <Container>
+          {/*<Header />*/}
 
-              <ProjectHeader
+            <>
+            <Intro />
+              <article>
+                <Head>
+                  <title>
+                    {project.title} | bricolage
+                  </title>
+                  <meta property="og:image" content={project.ogImage.url} />
+                </Head>
+
+                <ProjectHeader
+                  title={project.title}
+                  coverImage={project.coverImage}
+                  date={project.date}
+                  author={project.author}
+                  tags={project.tags}
+                />
+
+                <ProjectBody
                 title={project.title}
                 coverImage={project.coverImage}
                 date={project.date}
                 author={project.author}
                 tags={project.tags}
-              />
+                content={project.content}
+                />
+              </article>
+              {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}
+              {project.imageGallery.length > 0 && <ImageGallery images={project.imageGallery} />}
+              {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
+            </>
 
-              <ProjectBody
-              title={project.title}
-              coverImage={project.coverImage}
-              date={project.date}
-              author={project.author}
-              tags={project.tags}
-              content={project.content}
-              />
-            </article>
-            {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}
-            {project.imageGallery.length > 0 && <ImageGallery images={project.imageGallery} />}
-            {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
-          </>
-        )}
-      </Container>
-    </Layout>
+        </Container>
+      </Layout>
+    )}
     </ParallaxProvider>
   )
 }
