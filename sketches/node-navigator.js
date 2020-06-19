@@ -1,4 +1,6 @@
 let node_size = 100; //initial
+let hash_radius = 50;
+let text_size = 12;
 let spacing_distance = 0;
 
 let nodes = [];
@@ -11,7 +13,7 @@ class Hashtag {
   constructor(p5_, name_) {
 		this.p5 = p5_;
     this.name = name_;
-		this.textSize = 12;
+		this.textSize = text_size;
 		// TO DO: Fix overlapping
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance * 1.5, this.p5.width - spacing_distance * 1.5), this.p5.random(spacing_distance * 1.5, this.p5.height - spacing_distance * 1.5)  );
 		this.isDragged = false;
@@ -29,7 +31,7 @@ class Hashtag {
 		this.p5.noStroke();
 		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
 		this.p5.textFont(font, this.textSize);
-    this.p5.text(this.name, this.position.x, this.position.y, 100, 100);
+    this.p5.text(this.name, this.position.x, this.position.y, hash_radius * 2, hash_radius * 2);
   }
   
   checkPositions() {
@@ -145,20 +147,46 @@ class Node {
 }
 
 function repositionHashtags(p5) {
+	console.log(spacing_distance);
 	var count = global_hashtags.length;
-	var xAmount = (p5.windowWidth - 400 - 4 * spacing_distance) / count;
-	var yAmount = (555 - 4 * spacing_distance) / count;
+	var numRows = p5.ceil(count / 2);
+	var numCols = p5.ceil(count / numRows);
+	if (numRows - numCols > 1) {
+		if (numRows > numCols) {
+			numRows -= 1;
+			numCols += 1;
+		} else {
+			numRos += 1;
+			numCols -= 1;
+		}
+	}
+	console.log(numRows);
+	console.log(numCols);
+	var xAmount = p5.floor((p5.windowWidth - 400 - count * spacing_distance - hash_radius * numRows) / numRows);
+	var yAmount = p5.floor((555 - count * spacing_distance - hash_radius * numCols) / numCols);
 	console.log(xAmount);
 	console.log(yAmount);
-	var xP = spacing_distance;
-	var yP = spacing_distance;
-	for (var i = 0; i < global_hashtags.length; i++) {
-		var x = p5.random(xP, xP + xAmount);
-		xP += xAmount;
-		var y = p5.random(yP, yP + yAmount);
-		yP += yAmount;
+	var xP = spacing_distance * 2 + hash_radius;
+	var yP = spacing_distance * 2;
 
-		global_hashtags[i].setPosition(p5.createVector(x, y));
+	let index = 0;
+	for (var i = 0; i < numRows; i++) {
+		yP = spacing_distance * 4;
+		console.log("first x: ", xP, " second x: ", xP + xAmount - spacing_distance);
+		//var x = (xP + xP + xAmount) / 2;
+		var x = p5.random(xP, xP + xAmount);
+		xP += xAmount + spacing_distance + hash_radius;
+		for (var j = 0; j < numCols; j++) {
+			console.log("first y: ", yP, " second y: ", yP + yAmount - spacing_distance);
+			//var y = (yP + yP + yAmount)/2;
+			var y = p5.random(yP, yP + yAmount);
+			yP += yAmount + spacing_distance + hash_radius;
+			console.log(index);
+			if (index < count) {
+				global_hashtags[index].setPosition(p5.createVector(x, y));
+			}
+			index += 1;
+		}
 	}
 }
 
@@ -266,8 +294,8 @@ function hover(p5, p) {
 		//p5.background(234, 227, 148, 100);
 		p5.fill(0);
 		p5.textAlign(p5.CENTER, p5.CENTER);
-		p5.textFont(hover_font, 15);
-		p5.text(p.getTitle(), p.getPosition().x, p.getPosition().y - 18);
+		p5.textFont(hover_font, text_size);
+		p5.text(p.getTitle(), p.getPosition().x, p.getPosition().y - (text_size + 3));
 		
 		p.setLineAlpha(255);
   } else {
