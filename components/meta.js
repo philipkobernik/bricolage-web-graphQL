@@ -35,7 +35,7 @@ export default function Meta() {
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={SITE_DESCRIPTION}
+        content={OG_SITE_DESCRIPTION}
       />
 
       {/* Essential META Tags */}
