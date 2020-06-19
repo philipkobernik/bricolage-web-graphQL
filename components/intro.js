@@ -3,7 +3,7 @@ import BricolageLogo from '../components/bricolage-logo'
 import { Parallax } from 'react-scroll-parallax';
 import BricolageNodeNavigator from '../components/bricolage-nodeNavigator'
 
-export default function Intro({projects}) {
+export default function Intro({projects, showNodeNavi=false}) {
   //console.log("intro", projects);
   return (
     <section className="flex-col md:flex-row flex items-center md:justify-between mt-16 mb-16 md:mb-12">
@@ -11,7 +11,7 @@ export default function Intro({projects}) {
       <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
         <div className="flex">
           <BricolageLogo />
-          <BricolageNodeNavigator p = {projects} />
+          { showNodeNavi && <BricolageNodeNavigator p = {projects} /> }
         </div>
       </h1>
 
