@@ -1,17 +1,7 @@
 import Head from 'next/head'
-import { CMS_NAME, HOME_OG_IMAGE_URL } from '../lib/constants'
+import { OG_SITE_DESCRIPTION } from '../lib/constants'
 
-const defaultImageUrl = '/images/bricolage_home_page.jpg';
-const defaultTitle = "bricolage";
-const defaultDescription = "a digital gallery and archive of works created by members of the Media Arts and Techology graduate program @ UC Santa Barbara";
-const defaultPageUrl = "https://bricolage.mat.ucsb.edu";
-
-export default function Meta({
-  ogImageUrl=defaultImageUrl,
-  ogTitle=defaultTitle,
-  ogDescription=defaultDescription,
-  ogPageUrl=defaultPageUrl
-}) {
+export default function Meta() {
   return (
     <Head>
       <link
@@ -45,20 +35,14 @@ export default function Meta({
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={ogDescription}
+        content={SITE_DESCRIPTION}
       />
 
       {/* Essential META Tags */}
-      <meta property="og:title" content={ogTitle} />
-      <meta property="og:description" content={ogDescription} />
-      <meta property="og:image" content={ogImageUrl} />
-
-      <meta property="og:url" content={ogPageUrl} />
       <meta name="twitter:card" content="summary_large_image" />
 
       {/* Non-Essential, But Recommended */}
       <meta property="og:site_name" content="bricolage" />
-      { /* <meta name="twitter:image:alt" content="Alt text for image"> */ }
     </Head>
   )
 }
