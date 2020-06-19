@@ -17,7 +17,7 @@ export default function Index({ allProjects }) {
           <title>bricolage</title>
         </Head>
         <Container>
-          <Intro projects = {allProjects}/>
+          <Intro projects={allProjects} showNodeNavi={true}/>
           {allProjects.length > 0 && <MoreStories projects={allProjects} />}
         </Container>
       </Layout>
