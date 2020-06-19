@@ -401,22 +401,26 @@ function boundaryCheck(p5) {
 			let nodeUpEdge = nodes[j].getPosition().y - collision_radius/2; 
 			if (nRightEdge > nodeLeftEdge) {
 				if ( (nUpEdge > nodeUpEdge && nUpEdge < nodeDownEdge) || (nDownEdge < nodeDownEdge && nDownEdge > nodeUpEdge) ) {
-					
+					//I also tried changing final_direction here, didn't work either
+					//nodes[i].random_spread = p5.createVector(nodes[j].random_spread.mult(-1));
 					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
 				}
 			} 
 			if (nLeftEdge < nodeRightEdge) {
 				if ( (nUpEdge > nodeUpEdge && nUpEdge < nodeDownEdge) || (nDownEdge < nodeDownEdge && nDownEdge > nodeUpEdge) ) {
+					//nodes[i].random_spread = p5.createVector(nodes[j].random_spread.mult(-1));
 					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
 				}
 			} 
 			if (nUpEdge < nodeUpEdge) {
 				if ( (nLeftEdge < nodeRightEdge && nLeftEdge > nodeLeftEdge) || (nRightEdge < nodeRightEdge && nRightEdge > nodeLeftEdge) ) {
+					//nodes[i].random_spread = p5.createVector(nodes[j].random_spread.mult(-1));
 					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
 				}
 			} 
 			if (nDownEdge > nodeDownEdge) {
 				if ( (nLeftEdge <= nodeRightEdge && nLeftEdge > nodeLeftEdge) || (nRightEdge < nodeRightEdge && nRightEdge > nodeLeftEdge) ) {
+					//nodes[i].random_spread = p5.createVector(nodes[j].random_spread.mult(-1));
 					//nodes[i].setPosition(nodes[i].getPosition().add(p5.createVector(p5.random(-2, 2), p5.random(-2, 2))));
 				}
 			}
