@@ -27,7 +27,7 @@ export default function Project({ project, moreProjects, preview }) {
   if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
   }
-
+  console.log("yo " + project.externalUrl)
   return (
     <ParallaxProvider>
     <Layout preview={preview}>
@@ -63,14 +63,15 @@ export default function Project({ project, moreProjects, preview }) {
               lab = {project.labAffiliation.length > 0 && project.labAffiliation[0].name}
               tags={project.tags}
               content={project.content}
+              externalurl = {project.externalUrl}
               />
             </article>
             {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}
             {project.imageGallery.length > 0 && <ImageGallery images={project.imageGallery} />}
             {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
+            <Footer/>
           </>
         )}
-        <Footer/>
       </Container>
     </Layout>
     </ParallaxProvider>

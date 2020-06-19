@@ -7,7 +7,7 @@ import Collaborator from '../components/collaborator'
 import Lab from '../components/lab'
 
 
-export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content }) {
+export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content, externalurl }) {
   return (
     <>
     <ProjectTitle>{title}</ProjectTitle>
@@ -42,6 +42,7 @@ export default function ProjectBody({ title, coverImage, date, author, collabora
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: content }}
       />
+      <div className="m-6 text-purple text-md"> <a className="hover:underline" href={externalurl}> {externalurl} </a></div>
       </div>
     </div>
     </>

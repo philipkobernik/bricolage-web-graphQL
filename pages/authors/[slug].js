@@ -67,9 +67,9 @@ export default function Author({ author, projects, preview}) {
           </div>
           </article>
           { projects.length > 0 && <ArtistProjects projects={projects} /> }
+          <Footer/>
           </>
         )}
-        <Footer/>
       </Container>
     </Layout>
     </ParallaxProvider>

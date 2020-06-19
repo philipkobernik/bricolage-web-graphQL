@@ -51,9 +51,9 @@ export default function Tag({ tag, projects, preview}) {
           </article>
 
           { projects.length > 0 && <MoreStories projects={projects} /> }
+          <Footer/>
           </>
         )}
-        <Footer/>
       </Container>
     </Layout>
     </ParallaxProvider>
