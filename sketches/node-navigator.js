@@ -77,11 +77,12 @@ class Node {
 		}
 
 		this.slug = slug_; //string
+		this.hover = false;
 
 		// this.lab_affiliation = lab_affiliation_;
 
 		// set random initial positions
-    this.size = node_size*2;
+    this.size = node_size*3;
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance, this.p5.windowWidth-400 - spacing_distance), this.p5.random(spacing_distance, this.p5.height - spacing_distance)  );
     this.position.x = this.p5.int(this.position.x/this.size)*this.size;
     this.position.y = this.p5.int(this.position.y/this.size)*this.size;
@@ -304,6 +305,18 @@ const draw = p5 => {
 		hover(p5, nodes[i]);
 	}
 
+	for(var i = 0; i< nodes.length; i++){
+		if(nodes[i].hover){
+			p5.fill(0);
+			p5.textAlign(p5.CENTER, p5.CENTER);
+			p5.textFont(hover_font, text_size);
+			p5.text(nodes[i].getTitle(), nodes[i].getPosition().x, nodes[i].getPosition().y - (text_size + 9));
+			nodes[i].setLineAlpha(255);
+	  } else {
+			nodes[i].setLineAlpha(20);
+		}
+	}
+
 	boundaryCheck(p5);
 }
 
@@ -368,14 +381,10 @@ function hover(p5, p) {
 	{
 		//p5.background(255);
 		//p5.background(234, 227, 148, 100);
-		p5.fill(0);
-		p5.textAlign(p5.CENTER, p5.CENTER);
-		p5.textFont(hover_font, text_size);
-		p5.text(p.getTitle(), p.getPosition().x, p.getPosition().y - (text_size + 3));
+		p.hover = true;
 
-		p.setLineAlpha(255);
   } else {
-		p.setLineAlpha(20);
+		p.hover = false;
 	}
 }
 
