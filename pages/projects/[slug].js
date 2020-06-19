@@ -15,7 +15,7 @@ import Head from 'next/head'
 import Intro from '../../components/intro'
 import VideoPlayer from '../../components/video-player'
 
-import { PRODUCTION_HOSTNAME } from '../../lib/constants'
+import { PRODUCTION_SITE_URL } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import { ParallaxProvider } from 'react-scroll-parallax';
 
@@ -46,7 +46,7 @@ export default function Project({ project, moreProjects, preview }) {
                 <meta property="og:image" content={project.ogImage.url} />
                 <meta property="og:title" content={project.title} />
                 <meta property="og:description" content={project.excerpt} />
-                <meta property="og:url" content={PRODUCTION_HOSTNAME + router.asPath} />
+                <meta property="og:url" content={PRODUCTION_SITE_URL + router.asPath} />
               </Head>
 
               <ProjectHeader
