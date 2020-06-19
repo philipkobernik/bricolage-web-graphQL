@@ -19,7 +19,7 @@ export default function Index({ allProjects }) {
           <meta property="og:url" content={PRODUCTION_SITE_URL} />
         </Head>
         <Container>
-          <Intro projects = {allProjects}/>
+          <Intro projects={allProjects} showNodeNavi={true}/>
           {allProjects.length > 0 && <MoreStories projects={allProjects} />}
         </Container>
       </Layout>

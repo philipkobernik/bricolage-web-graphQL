@@ -59,6 +59,6 @@ export default class BricolageLogo extends Component {
         this.sketch.remove();
     }
     render() {
-        return <div ref={this.canvasParentRef} className={this.props.className || "react-p5"} style={this.props.style || {}} />;
+        return <div ref={this.canvasParentRef} className={this.props.className || "react-p5"} style={this.props.style || {"max-width": "185px"}} />;
     }
 }
