@@ -5,7 +5,7 @@ import Intro from '../components/intro'
 import Layout from '../components/layout'
 import { getAllProjectsForHome } from '../lib/api'
 import Head from 'next/head'
-import { HOME_OG_IMAGE_URL, OG_SITE_DESCRIPTION } from '../lib/constants'
+import { HOME_OG_IMAGE_URL, OG_SITE_DESCRIPTION, PRODUCTION_SITE_URL } from '../lib/constants'
 
 export default function Index({ allProjects }) {
   return (
