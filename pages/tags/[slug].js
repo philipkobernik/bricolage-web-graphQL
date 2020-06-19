@@ -6,6 +6,7 @@ import { getAllTagsWithSlug, getTags, getAllProjectsByTag } from '../../lib/api'
 import ProjectTitle from '../../components/project-title'
 import Head from 'next/head'
 import Intro from '../../components/intro'
+import Footer from '../../components/footer'
 import Loading from '../../components/loading'
 import MoreStories from '../../components/more-stories'
 import markdownToHtml from '../../lib/markdownToHtml'
@@ -52,6 +53,7 @@ export default function Tag({ tag, projects, preview}) {
           { projects.length > 0 && <MoreStories projects={projects} /> }
           </>
         )}
+        <Footer/>
       </Container>
     </Layout>
     </ParallaxProvider>

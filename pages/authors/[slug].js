@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Container from '../../components/container'
 import Header from '../../components/header'
+import Footer from '../../components/footer'
 import ProjectHeader from '../../components/project-header'
 import Layout from '../../components/layout'
 import { getAllAuthorsWithSlug, getAuthors, getAllProjectsByAuthor } from '../../lib/api'
@@ -68,6 +69,7 @@ export default function Author({ author, projects, preview}) {
           { projects.length > 0 && <ArtistProjects projects={projects} /> }
           </>
         )}
+        <Footer/>
       </Container>
     </Layout>
     </ParallaxProvider>
