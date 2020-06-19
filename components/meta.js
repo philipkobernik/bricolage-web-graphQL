@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { CMS_NAME, HOME_OG_IMAGE_URL } from '../lib/constants'
+import { OG_SITE_DESCRIPTION } from '../lib/constants'
 
 export default function Meta() {
   return (
@@ -35,9 +35,14 @@ export default function Meta() {
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={`A statically generated blog example using Next.js and ${CMS_NAME}.`}
+        content={OG_SITE_DESCRIPTION}
       />
-      <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+
+      {/* Essential META Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+
+      {/* Non-Essential, But Recommended */}
+      <meta property="og:site_name" content="bricolage" />
     </Head>
   )
 }

@@ -15,7 +15,7 @@ import Head from 'next/head'
 import Intro from '../../components/intro'
 import VideoPlayer from '../../components/video-player'
 
-import { CMS_NAME } from '../../lib/constants'
+import { PRODUCTION_SITE_URL } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import { ParallaxProvider } from 'react-scroll-parallax';
 
@@ -41,9 +41,12 @@ export default function Project({ project, moreProjects, preview }) {
             <article>
               <Head>
                 <title>
-                  {project.title} | Next.js Blog Example with {CMS_NAME}
+                  {project.title} | bricolage
                 </title>
                 <meta property="og:image" content={project.ogImage.url} />
+                <meta property="og:title" content={project.title} />
+                <meta property="og:description" content={project.excerpt} />
+                <meta property="og:url" content={PRODUCTION_SITE_URL + router.asPath} />
               </Head>
 
               <ProjectHeader
