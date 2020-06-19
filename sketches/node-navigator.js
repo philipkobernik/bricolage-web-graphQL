@@ -27,15 +27,16 @@ class Hashtag {
   display() {
 		this.p5.fill(211, 103, 60);
 		this.p5.noStroke();
+		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
 		this.p5.textFont(font, this.textSize);
-    this.p5.text(this.name, this.position.x, this.position.y);
+    this.p5.text(this.name, this.position.x, this.position.y, 100, 100);
   }
   
   checkPositions() {
-    if (this.p5.mouseX >= this.position.x - this.textSize * 2 && 
-				this.p5.mouseX <= this.position.x + this.textSize * 2 && 
-				this.p5.mouseY >= this.position.y - this.textSize && 
-				this.p5.mouseY <= this.position.y + this.textSize) 
+    if (this.p5.mouseX >= this.position.x - 50 && 
+				this.p5.mouseX <= this.position.x + 50 && 
+				this.p5.mouseY >= this.position.y - (this.textSize * 2) && 
+				this.p5.mouseY <= this.position.y) 
     {
       this.isDragged = true;
     }
@@ -264,8 +265,9 @@ function hover(p5, p) {
 		//p5.background(255);
 		//p5.background(234, 227, 148, 100);
 		p5.fill(0);
+		p5.textAlign(p5.CENTER, p5.CENTER);
 		p5.textFont(hover_font, 15);
-		p5.text(p.getTitle(), p.getPosition().x - p.getSize()/2, p.getPosition().y - (p.getSize()/2 + 5));
+		p5.text(p.getTitle(), p.getPosition().x, p.getPosition().y - 18);
 		
 		p.setLineAlpha(255);
   } else {
