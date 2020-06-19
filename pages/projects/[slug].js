@@ -13,6 +13,7 @@ import ProjectTitle from '../../components/project-title'
 import Loading from '../../components/loading'
 import Head from 'next/head'
 import Intro from '../../components/intro'
+import Footer from '../../components/footer'
 import VideoPlayer from '../../components/video-player'
 
 import { CMS_NAME } from '../../lib/constants'
@@ -69,6 +70,7 @@ export default function Project({ project, moreProjects, preview }) {
             {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
           </>
         )}
+        <Footer/>
       </Container>
     </Layout>
     </ParallaxProvider>

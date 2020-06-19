@@ -14,7 +14,7 @@ export default function ArtistProjectPreview({
 }) {
   return (
     <div class="grid grid-cols-1 md:grid-cols-4">
-      <div className="md:col-start-1 md:col-end-2 mr-6">
+      <div className="h-full md:col-start-1 md:col-end-2 mr-6">
         <CoverImage
           slug={slug}
           title={title}

@@ -14,27 +14,28 @@ class Hashtag {
     this.position = createVector(random(100, width - 100), random(100, height - 100));
     this.isDragged = false;
   }
-  
+
   getName() { return this.name; }
   getPosition() { return this.position; }
   getDragged() {return this.isDragged; }
-  
+
   setPosition(p) { this.position = p; }
   setDragged(b) {this.isDragged = b; }
-  
+
   display() {
     fill(0);
+    textFont('"Press Start 2D"');
     textSize(this.textSize);
     textAlign(CENTER, CENTER);
     //print("name: " + this.name + " x: " + this.position.x + " y: " +  this.position.y);
     text(this.name, this.position.x, this.position.y);
   }
-  
+
   checkPositions() {
-    if (mouseX >= this.position.x - this.textSize * 2 && 
-        mouseX <= this.position.x + this.textSize * 2 && 
-        mouseY >= this.position.y - this.textSize && 
-        mouseY <= this.position.y + this.textSize) 
+    if (mouseX >= this.position.x - this.textSize * 2 &&
+        mouseX <= this.position.x + this.textSize * 2 &&
+        mouseY >= this.position.y - this.textSize &&
+        mouseY <= this.position.y + this.textSize)
     {
       this.isDragged = true;
     }
@@ -104,7 +105,7 @@ class Node {
 	update() {
 		if (this.is_clicked) {
 			// go to project page
-    } 
+    }
 	}
 
 	display() {
@@ -160,7 +161,7 @@ const draw = p5 => {
 	if (node_navi_state == 1) { //hashtag view
 		displayHashtags();
 	}
-	
+
 	for (var i = 0; i < nodes.length; i++) {
 		nodes[i].display();
 		hover(p5, nodes[i]);
@@ -182,13 +183,13 @@ function hover(p5, p) {
   if (p5.mouseX > p.getPosition().x - p.getSize() / 2 &&
     p5.mouseX < p.getPosition().x + p.getSize() / 2 &&
     p5.mouseY > p.getPosition().y - p.getSize() / 2 &&
-		p5.mouseY < p.getPosition().y + p.getSize() / 2) 
+		p5.mouseY < p.getPosition().y + p.getSize() / 2)
 	{
 		//p5.textSize(16);
 		//p5.textAlign(p5.CENTER);
 		p5.fill(0);
 		p5.text(p.getTitle(), p.getPosition().x - p.getSize()/2, p.getPosition().y - (p.getSize()/2 + 5));
-		
+
 		p.setLineAlpha(255);
   } else {
 		p.setLineAlpha(20);
@@ -232,7 +233,7 @@ function assignRelatedness(p5, p1, p2) { //takes in two projects and checks thei
 			nameCounter++;
 		}
 	}
-	
+
 	if (nameCounter > 0) {
 		p5.strokeWeight(nameCounter);
 		var alpha = 50;
