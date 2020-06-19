@@ -23,11 +23,11 @@ import { ParallaxProvider } from 'react-scroll-parallax';
 
 
 export default function Project({ project, moreProjects, preview }) {
-  const router = useRouter()
+  const router = useRouter();
   if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
   }
-  console.log("yo " + project.externalUrl)
+
   return (
     <ParallaxProvider>
     <Layout preview={preview}>
