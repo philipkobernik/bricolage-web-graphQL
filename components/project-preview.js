@@ -30,7 +30,7 @@ export default function ProjectPreview({
           </Link>
         </h3>
 
-        <p className="w-full text-lg leading-relaxed mb-4">{excerpt}</p>
+        <p className="w-full text-lg leading-relaxed mb-1">{excerpt}</p>
 
         <div className="mb-6 text-lg">
         {
