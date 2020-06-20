@@ -239,7 +239,7 @@ function repositionHashtags(p5) {
 	var yAmount = p5.floor((555 - count * spacing_distance - hash_radius * numCols) / numCols);
 	//console.log(xAmount);
 	//console.log(yAmount);
-	var xP = spacing_distance * 2 + hash_radius;
+	var xP = spacing_distance * 4 + hash_radius;
 	var yP = spacing_distance * 2;
 
 	let index = 0;
