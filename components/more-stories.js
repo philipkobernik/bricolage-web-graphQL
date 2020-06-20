@@ -15,6 +15,7 @@ export default function MoreStories({ projects, header="Projects" }) {
             date={project.date}
             author={project.author}
             authorSlug ={project.author.slug}
+            tags={project.tags}
             slug={project.slug}
             excerpt={project.excerpt}
           />
