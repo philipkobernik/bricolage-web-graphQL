@@ -5,6 +5,7 @@ export default function TagsList({ tags }) {
     <Link
       as={`/tags/${t.slug}`}
       href="/tags/[slug]"
+      key={t.slug}
     >
       <a className="text-orange hover:underline">
         {t.name}
