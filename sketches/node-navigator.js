@@ -236,7 +236,7 @@ function repositionHashtags(p5) {
 	}
 	//console.log(numRows);
 	//console.log(numCols);
-	var xAmount = p5.floor((p5.windowWidth - 400 - count * spacing_distance - hash_radius * numRows) / numRows);
+	var xAmount = p5.floor((p5.width - 400 - count * spacing_distance - hash_radius * numRows) / numRows);
 	var yAmount = p5.floor((555 - count * spacing_distance - hash_radius * numCols) / numCols);
 	//console.log(xAmount);
 	//console.log(yAmount);
@@ -249,7 +249,7 @@ function repositionHashtags(p5) {
 		//console.log("first x: ", xP, " second x: ", xP + xAmount - spacing_distance);
 		//var x = (xP + xP + xAmount) / 2;
 		var x = p5.random(xP, xP + xAmount);
-		xP += xAmount + spacing_distance * 2 + hash_radius;
+		xP += xAmount + spacing_distance * 4 + hash_radius * 4;
 		for (var j = 0; j < numCols; j++) {
 			//	console.log("first y: ", yP, " second y: ", yP + yAmount - spacing_distance);
 			//var y = (yP + yP + yAmount)/2;
