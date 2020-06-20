@@ -139,6 +139,7 @@ class Node {
 	}
 
 	update(nodes, index) {
+		if (this.hover == false) {
 		if (this.p5.round(this.position.mag()) != this.p5.round(this.final_position.mag()) && !this.oscillating) {
 			var pos_difference = this.p5.createVector((this.final_position.x - this.position.x), (this.final_position.y - this.position.y));
 
@@ -207,7 +208,7 @@ class Node {
 				}
 			}
 		}
-
+	}
 		if (this.is_clicked) {
 			window.open("/projects/" + this.slug);
 			this.is_clicked = false;
