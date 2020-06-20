@@ -5,6 +5,7 @@ import Date from '../components/date'
 import Link from 'next/link'
 import Collaborator from '../components/collaborator'
 import Lab from '../components/lab'
+import TagsList from '../components/tags-list'
 
 
 export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content, externalurl }) {
@@ -29,7 +30,7 @@ export default function ProjectBody({ title, coverImage, date, author, collabora
           </div>
 
           <div className="my-6 text-lg">
-            { tags.map(t => (<Link as={`/tags/${t.slug}`} href="/tags/[slug]"><a className="text-orange hover:underline">{t.name}<br/></a></Link>))}
+            <TagsList tags={tags} />
           </div>
           <div className="my-6 text-lg">
             <Date dateString={date} />
