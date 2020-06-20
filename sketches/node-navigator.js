@@ -240,7 +240,7 @@ function repositionHashtags(p5) {
 	var yAmount = p5.floor((555 - count * spacing_distance - hash_radius * numCols) / numCols);
 	//console.log(xAmount);
 	//console.log(yAmount);
-	var xP = spacing_distance * 2 + hash_radius;
+	var xP = spacing_distance * 4 + hash_radius;
 	var yP = spacing_distance * 2;
 
 	let index = 0;
@@ -339,6 +339,7 @@ const windowResized = (p5, canvasParentRef) => {
 		var reset_position = p5.createVector(nodes[i].getPosition().x - amount_changed, nodes[i].getPosition().y);
 		nodes[i].setPosition(reset_position);
 	}
+	repositionHashtags(p5);
 }
 
 const mousePressed = p5 => {
