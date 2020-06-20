@@ -5,28 +5,32 @@ import Date from '../components/date'
 import Link from 'next/link'
 import Collaborator from '../components/collaborator'
 import Lab from '../components/lab'
+import ProjectSideBar from '../components/project-side-bar'
 import TagsList from '../components/tags-list'
 
 
-export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content, externalurl }) {
+export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content, externalUrl, sourceCode}) {
   return (
     <>
     <ProjectTitle>{title}</ProjectTitle>
     <div className="grid grid-cols-1 md:grid-cols-4">
 
       <div className="md:col-start-1 md:col-end-2 z-10 m-6">
-        <div className="max-w-2xl mx-auto mb-40">
-          <div className="hidden md:block">
+        <div className="max-w-2xl mx-auto mb-10">
+          <div className="block">
             <Avatar name={author.name} picture={author.picture} slug={author.slug}/>
-            {collaborators != "" && <Collaborator collaborators = {collaborators}/>}
-            {lab != "" && <Lab labs = {lab}/>}
 
-          </div>
+            <ProjectSideBar title="collab.s">
+              {collaborators}
+            </ProjectSideBar>
 
-          <div className="block md:hidden">
-            <Avatar name={author.name} picture={author.picture} slug={author.slug}/>
-            {collaborators != "" && <Collaborator collaborators = {collaborators}/>}
-            {lab != "" && <Lab labs = {lab}/>}
+            <ProjectSideBar title="lab.s">
+              {lab}
+            </ProjectSideBar>
+
+            <ProjectSideBar title="source">
+              {sourceCode}
+            </ProjectSideBar>
           </div>
 
           <div className="my-6 text-lg">
@@ -43,7 +47,7 @@ export default function ProjectBody({ title, coverImage, date, author, collabora
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: content }}
       />
-      <div className="m-6 text-purple text-md"> <a className="hover:underline" href={externalurl}> {externalurl} </a></div>
+      <div className="m-6 text-purple text-md"> <a className="hover:underline" href={externalUrl}> {externalUrl} </a></div>
       </div>
     </div>
     </>
