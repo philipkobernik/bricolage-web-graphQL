@@ -4,14 +4,30 @@ import { Parallax } from 'react-scroll-parallax';
 export default function ImageGallery({ images }) {
   let index = 0;
 
-  function addRandomPos(){
+  function getPositionClasses(aspectRatio){
     let classN = 'shadow-small hover:shadow-medium transition-shadow duration-200';
     if (index % 2 == 0){
-      classN += ' md:col-start-1';
-      classN += ' md:col-end-4';
+      // EVEN (LEFT)
+      if(aspectRatio > 1) {
+        // LANDSCAPE
+        classN += ' md:col-start-1';
+        classN += ' md:col-end-4';
+      } else {
+        // PORTRAIT
+        classN += ' md:col-start-2';
+        classN += ' md:col-end-4';
+      }
     } else {
-      classN += ' md:col-start-2';
-      classN += ' md:col-end-5';
+      // ODD (RIGHT)
+      if(aspectRatio > 1) {
+        // LANDSCAPE
+        classN += ' md:col-start-2';
+        classN += ' md:col-end-5';
+      } else {
+        // PORTRAIT
+        classN += ' md:col-start-3';
+        classN += ' md:col-end-5';
+      }
     }
     index++;
     return classN;
@@ -21,10 +37,11 @@ export default function ImageGallery({ images }) {
     <section>
 
       <div className="grid grid-cols-1 md:grid-cols-4 row-gap-20 md:row-gap-32 mb-32">
-        {images.map(image => (
+        {images.map((image, index) => (
           <Image
             data={image.responsiveImage}
-            className={addRandomPos()}
+            className={getPositionClasses(image?.responsiveImage?.aspectRatio)}
+            key={index}
           />
         ))}
       </div>
