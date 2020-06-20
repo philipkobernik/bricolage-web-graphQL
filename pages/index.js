@@ -13,9 +13,9 @@ export default function Index({ allProjects }) {
     <>
       <Layout>
         <Head>
-          <title>bricolage</title>
+          <title>MAT | bricolage</title>
           <meta property="og:image" content={HOME_OG_IMAGE_URL} />
-          <meta property="og:title" content="bricolage" />
+          <meta property="og:title" content="MAT | bricolage" />
           <meta property="og:description" content={OG_SITE_DESCRIPTION} />
           <meta property="og:url" content={PRODUCTION_SITE_URL} />
         </Head>

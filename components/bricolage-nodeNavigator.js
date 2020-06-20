@@ -20,13 +20,12 @@ export default class BricolageNodeNavigator extends Component {
 
   componentDidMount(){
     const p5 = require("p5")
-    this.sketch = new p5( p => {
-      p.setup = () => {
-        this.setup(p, this.canvasParentRef.current, this.props);
+    this.sketch = new p5( _p5 => {
+      _p5.setup = () => {
+        this.setup(_p5, this.canvasParentRef.current, this.props);
       };
       const p5Events = [
         "draw",
-        "windowResized",
         "preload",
         "mouseClicked",
         "doubleClicked",
@@ -45,13 +44,20 @@ export default class BricolageNodeNavigator extends Component {
         "deviceTurned",
         "deviceShaken"
       ];
+
       p5Events.forEach(event => {
         if (this.sketchEvents[event]) {
-          p[event] = () => {
-              this.sketchEvents[event](p);
+          _p5[event] = () => {
+              this.sketchEvents[event](_p5); // most of the events only need the _p5 instance
           };
         }
       });
+
+      // windowResized event needs a reference to the current dom element
+      // so we'll make sure it gets the dom element whenever it gets called
+      _p5["windowResized"] = () => {
+          this.sketchEvents["windowResized"](_p5, this.canvasParentRef.current);
+      };
 
     })
   }
