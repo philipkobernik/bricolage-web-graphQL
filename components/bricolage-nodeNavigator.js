@@ -57,12 +57,12 @@ export default class BricolageNodeNavigator extends Component {
   }
 
   shouldComponentUpdate() {
-        return false;
-    }
-    componentWillUnmount() {
-        this.sketch.remove();
-    }
-    render() {
-        return <div ref={this.canvasParentRef} className={this.props.className || "react-p5"} style={this.props.style || {}} />;
-    }
+    return false;
+  }
+  componentWillUnmount() {
+    this.sketch.remove();
+  }
+  render() {
+    return <div ref={this.canvasParentRef} className={this.props.className || "react-p5"} style={this.props.style || {}} />;
+  }
 }
