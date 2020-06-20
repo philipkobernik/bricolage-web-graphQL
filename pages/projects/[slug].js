@@ -63,12 +63,11 @@ export default function Project({ project, moreProjects, preview }) {
                 date={project.date}
                 author={project.author}
                 collaborators={project.collaborators}
-                lab = {project.labAffiliation.length > 0 && project.labAffiliation[0].name}
+                labs={project.labAffiliation}
                 tags={project.tags}
                 content={project.content}
-                externalUrl = {project.externalUrl}
-                sourceCode = {project.sourceCode}
-
+                externalUrl={project.externalUrl}
+                sourceCodeUrl={project.sourceCodeUrl}
               />
             </article>
             {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}

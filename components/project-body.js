@@ -7,7 +7,7 @@ import ProjectSideBar from '../components/project-side-bar'
 import TagsList from '../components/tags-list'
 
 
-export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content, externalUrl, sourceCode}) {
+export default function ProjectBody({ title, coverImage, date, author, collaborators, labs, tags, content, externalUrl, sourceCodeUrl}) {
   return (
     <>
     <ProjectTitle>{title}</ProjectTitle>
@@ -23,11 +23,20 @@ export default function ProjectBody({ title, coverImage, date, author, collabora
             </ProjectSideBar>
 
             <ProjectSideBar title="lab.s">
-              {lab}
+              {
+                labs.map(lab => (
+                  <>
+                    {lab.name}
+                    <br />
+                  </>
+                ))
+              }
             </ProjectSideBar>
 
-            <ProjectSideBar title="source">
-              {sourceCode}
+            <ProjectSideBar title="source" thing={sourceCodeUrl} >
+              <a className="hover:underline" href={sourceCodeUrl} target="_blank">
+                visit external repository
+              </a>
             </ProjectSideBar>
           </div>
 
