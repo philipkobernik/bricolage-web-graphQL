@@ -14,11 +14,12 @@ export default function Intro({projects=[], showNodeNavi=false}) {
         </div>
       </h1>
 
-      { false && (
-        <h4 className="text-center md:text-left text-lg mt-5 md:pl-8">
-          search / disrupt / play / construct
+      {/* { false && ( */}
+        <h4 className="max-w-2xl mx-center text-xl">
+        {/* <h4 className="text-center md:text-left text-lg mt-5 md:pl-8"> */}
+          search | disrupt | play | construct
         </h4>
-      )}
+      {/* )} */}
     </section>
 
     <section className="flex-col md:flex-row flex items-center md:justify-between mt-16 mb-16 md:mb-12">
