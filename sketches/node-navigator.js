@@ -27,11 +27,18 @@ class Hashtag {
 	setDragged(b) { this.isDragged = b; }
 
 	display() {
-		this.p5.fill(211, 103, 60);
-		this.p5.noStroke();
-		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-		this.p5.textFont(font, this.textSize);
-		this.p5.text(this.name, this.position.x, this.position.y, hash_radius * 2, hash_radius * 2);
+		if (this.p5.mouseX >= this.position.x - 50 &&
+			this.p5.mouseX <= this.position.x + 50 &&
+			this.p5.mouseY >= this.position.y - (this.textSize * 2) &&
+			this.p5.mouseY <= this.position.y) {
+				this.p5.fill(211-50, 103-50, 60-50);
+		} else{
+			this.p5.fill(211, 103, 60);
+		}
+			this.p5.noStroke();
+			this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
+			this.p5.textFont(font, this.textSize);
+			this.p5.text(this.name, this.position.x, this.position.y, hash_radius * 2, hash_radius * 2);
 	}
 
 	checkPositions() {
@@ -294,8 +301,7 @@ const draw = p5 => {
 			assignRelatedness(p5, nodes[i], nodes[j]);
 		}
 	}
-
-	displayHashtags();
+	displayHashtags(p5);
 
 	for (var i = 0; i < nodes.length; i++) {
 		nodes[i].update(nodes, i);
@@ -305,6 +311,9 @@ const draw = p5 => {
 
 	for (var i = 0; i < nodes.length; i++) {
 		if (nodes[i].hover) {
+			p5.fill(255,100);
+			p5.noStroke();
+			p5.rect(nodes[i].getPosition().x, nodes[i].getPosition().y - (text_size + 9), p5.textWidth(nodes[i].getTitle())/2, 20);
 			p5.fill(0);
 			p5.textAlign(p5.CENTER, p5.CENTER);
 			p5.textFont(hover_font, text_size);
@@ -364,7 +373,7 @@ const mouseReleased = p5 => {
 	}
 }
 
-function displayHashtags() {
+function displayHashtags(p5) {
 	for (var i = 0; i < global_hashtags.length; i++) {
 		//grab their positions and visualize their names at that coordinate
 		global_hashtags[i].display();
