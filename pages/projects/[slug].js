@@ -8,7 +8,7 @@ import Header from '../../components/header'
 import ProjectHeader from '../../components/project-header'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
-import { getallProjectsWithSlug, getProjectAndMoreProjects } from '../../lib/api'
+import { getallProjectsWithSlug, getProjectAndMoreProjects, getAllProjectsForHome } from '../../lib/api'
 import ProjectTitle from '../../components/project-title'
 import Loading from '../../components/loading'
 import Head from 'next/head'
@@ -16,7 +16,7 @@ import Intro from '../../components/intro'
 import Footer from '../../components/footer'
 import VideoPlayer from '../../components/video-player'
 
-import { CMS_NAME } from '../../lib/constants'
+import { PRODUCTION_SITE_URL } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import { ParallaxProvider } from 'react-scroll-parallax';
 
@@ -37,13 +37,16 @@ export default function Project({ project, moreProjects, preview }) {
           <Loading>loading…</Loading>
         ) : (
           <>
-          <Intro />
+          <Intro showNodeNavi={false}/>
             <article>
               <Head>
                 <title>
-                  {project.title} | Next.js Blog Example with {CMS_NAME}
+                  {project.title} | bricolage
                 </title>
                 <meta property="og:image" content={project.ogImage.url} />
+                <meta property="og:title" content={project.title} />
+                <meta property="og:description" content={project.excerpt} />
+                <meta property="og:url" content={PRODUCTION_SITE_URL + router.asPath} />
               </Head>
 
               <ProjectHeader
@@ -55,15 +58,15 @@ export default function Project({ project, moreProjects, preview }) {
               />
 
               <ProjectBody
-              title={project.title}
-              coverImage={project.coverImage}
-              date={project.date}
-              author={project.author}
-              collaborators={project.collaborators}
-              lab = {project.labAffiliation.length > 0 && project.labAffiliation[0].name}
-              tags={project.tags}
-              content={project.content}
-              externalurl = {project.externalUrl}
+                title={project.title}
+                coverImage={project.coverImage}
+                date={project.date}
+                author={project.author}
+                collaborators={project.collaborators}
+                lab = {project.labAffiliation.length > 0 && project.labAffiliation[0].name}
+                tags={project.tags}
+                content={project.content}
+                externalurl = {project.externalUrl}
               />
             </article>
             {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}
@@ -89,7 +92,7 @@ export async function getStaticProps({ params, preview }) {
         ...data?.project,
         content,
       },
-      moreProjects: data?.moreProjects,
+      moreProjects: data?.moreProjects
     },
   }
 }

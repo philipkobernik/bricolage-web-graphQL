@@ -6,9 +6,7 @@ import Footer from '../components/footer'
 import Layout from '../components/layout'
 import { getAllProjectsForHome } from '../lib/api'
 import Head from 'next/head'
-import { CMS_NAME } from '../lib/constants'
-
-
+import { HOME_OG_IMAGE_URL, OG_SITE_DESCRIPTION, PRODUCTION_SITE_URL } from '../lib/constants'
 
 export default function Index({ allProjects }) {
   return (
@@ -16,9 +14,13 @@ export default function Index({ allProjects }) {
       <Layout>
         <Head>
           <title>bricolage</title>
+          <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+          <meta property="og:title" content="bricolage" />
+          <meta property="og:description" content={OG_SITE_DESCRIPTION} />
+          <meta property="og:url" content={PRODUCTION_SITE_URL} />
         </Head>
         <Container>
-          <Intro projects = {allProjects}/>
+          <Intro projects={allProjects} showNodeNavi={true}/>
           {allProjects.length > 0 && <MoreStories projects={allProjects} />}
           <Footer/>
         </Container>
