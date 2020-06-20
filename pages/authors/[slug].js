@@ -42,7 +42,7 @@ export default function Author({ author, projects, preview}) {
             </title>
           </Head>
           <AuthorName name={author.name}/>
-          <div className="grid grid-cols-1 md:grid-cols-4 mb-40">
+          <div className="grid grid-cols-1 md:grid-cols-4 mb-20">
           <div className="md:col-start-1 md:col-end-2 z-10 mr-6">
             <div className="max-w-2xl mx-auto">
                 <div className="hidden md:block">

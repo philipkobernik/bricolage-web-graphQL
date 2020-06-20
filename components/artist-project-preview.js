@@ -11,6 +11,7 @@ export default function ArtistProjectPreview({
   author,
   authorSlug,
   slug,
+  tags,
 }) {
   return (
     <div class="grid grid-cols-1 md:grid-cols-4">
@@ -28,7 +29,10 @@ export default function ArtistProjectPreview({
           </Link>
         </h3>
         <p className="w-full text-lg leading-relaxed mb-1">{excerpt}</p>
-        <div className="w-full text-md text-purple">
+        <div className="mb-6 text-lg">
+          { tags.map(t => (<Link as={`/tags/${t.slug}`} href="/tags/[slug]"><a className="text-orange hover:underline">{t.name} </a></Link>))}
+        </div>
+        <div className="w-full text-lg">
           <Date dateString={date} />
         </div>
       </div>
