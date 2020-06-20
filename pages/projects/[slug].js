@@ -68,6 +68,7 @@ export default function Project({ project, moreProjects, preview }) {
                 content={project.content}
                 externalUrl={project.externalUrl}
                 sourceCodeUrl={project.sourceCodeUrl}
+                medium={project.medium}
               />
             </article>
             {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}

@@ -7,7 +7,12 @@ import ProjectSideBar from '../components/project-side-bar'
 import TagsList from '../components/tags-list'
 
 
-export default function ProjectBody({ title, coverImage, date, author, collaborators, labs, tags, content, externalUrl, sourceCodeUrl}) {
+export default function ProjectBody({
+    title, coverImage, date, author,
+    collaborators, labs, tags, content,
+    externalUrl, sourceCodeUrl, medium
+  }) {
+
   return (
     <>
     <ProjectTitle>{title}</ProjectTitle>
@@ -33,9 +38,19 @@ export default function ProjectBody({ title, coverImage, date, author, collabora
               }
             </ProjectSideBar>
 
+            <ProjectSideBar title="media">
+              {medium}
+            </ProjectSideBar>
+
             <ProjectSideBar title="source" thing={sourceCodeUrl} >
               <a className="hover:underline" href={sourceCodeUrl} target="_blank">
                 visit external repository
+              </a>
+            </ProjectSideBar>
+
+            <ProjectSideBar title="link" thing={externalUrl} >
+              <a className="hover:underline" href={externalUrl} target="_blank">
+                visit external project
               </a>
             </ProjectSideBar>
           </div>
