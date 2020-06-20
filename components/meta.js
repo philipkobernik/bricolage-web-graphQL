@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { OG_SITE_DESCRIPTION } from '../lib/constants'
+import { OG_SITE_DESCRIPTION, OG_SITE_TITLE } from '../lib/constants'
 
 export default function Meta() {
   return (
@@ -42,7 +42,7 @@ export default function Meta() {
       <meta name="twitter:card" content="summary_large_image" />
 
       {/* Non-Essential, But Recommended */}
-      <meta property="og:site_name" content="bricolage" />
+      <meta property="og:site_name" content={OG_SITE_TITLE} />
     </Head>
   )
 }
