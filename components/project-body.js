@@ -5,6 +5,8 @@ import Date from '../components/date'
 import Link from 'next/link'
 import Collaborator from '../components/collaborator'
 import Lab from '../components/lab'
+import { Parallax } from 'react-scroll-parallax';
+
 
 
 export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content, externalurl }) {
@@ -12,6 +14,7 @@ export default function ProjectBody({ title, coverImage, date, author, collabora
     <>
     <ProjectTitle>{title}</ProjectTitle>
     <div className="grid grid-cols-1 md:grid-cols-4">
+
 
       <div className="md:col-start-1 md:col-end-2 z-10 m-6">
         <div className="max-w-2xl mx-auto mb-40">
