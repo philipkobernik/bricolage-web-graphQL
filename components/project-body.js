@@ -19,7 +19,6 @@ export default function ProjectBody({ title, coverImage, date, author, collabora
             <Avatar name={author.name} picture={author.picture} slug={author.slug}/>
             {collaborators != "" && <Collaborator collaborators = {collaborators}/>}
             {lab != "" && <Lab labs = {lab}/>}
-
           </div>
 
           <div className="block md:hidden">
