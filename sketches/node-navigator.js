@@ -316,6 +316,7 @@ const windowResized = p5 => {
 		var reset_position = p5.createVector(nodes[i].getPosition().x-amount_changed, nodes[i].getPosition().y);
 		nodes[i].setPosition(reset_position);
 	}
+	repositionHashtags(p5);
 }
 
 const mousePressed = p5 => {
