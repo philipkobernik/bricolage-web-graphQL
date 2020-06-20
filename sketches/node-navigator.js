@@ -1,8 +1,15 @@
-let node_size = 100; //initial
+
+// Globals that don't change
 let hash_radius = 50;
 let text_size = 12;
-let spacing_distance = 0;
 
+// Globals that DO change, and therefore need to be reset in setup()
+let node_size = 100;
+let spacing_distance = 0;
+let nodes = [];
+let global_hashtags = [];
+
+// Globals that can be overwritten
 let font = "";
 let hover_font = "";
 
@@ -14,8 +21,6 @@ class Hashtag {
 		// TO DO: Fix overlapping
 		this.position = this.p5.createVector(  this.p5.random(spacing_distance * 1.5, this.p5.width - spacing_distance * 1.5), this.p5.random(spacing_distance * 1.5, this.p5.height - spacing_distance * 1.5)  );
 		this.isDragged = false;
-    this.nodes = [];
-    this.tags = [];
   }
 
   getName() { return this.name; }
@@ -64,14 +69,14 @@ class Node {
 			var found = false;
 			this.hashtags.push(hashtags_[i]["name"]);
 			//set the global hashtag array
-			for (var j = 0; j < this.tags.length; j++) {
-				if (this.tags[j].getName().includes(hashtags_[i]["name"])) {
+			for (var j = 0; j < global_hashtags.length; j++) {
+				if (global_hashtags[j].getName().includes(hashtags_[i]["name"])) {
 					found = true;
 				}
 			}
 			if (!found) {
 				//console.log("new hashtag added");
-				this.tags.push(new Hashtag(this.p5, hashtags_[i]["name"]));
+				global_hashtags.push(new Hashtag(this.p5, hashtags_[i]["name"]));
 			}
 		}
 
@@ -145,7 +150,7 @@ class Node {
 			     //this.position.add(pos_difference.mult(this.size));
            let canMove = true;
 
-           for (let i = 0; i < this.nodes.length; i++){
+           for (let i = 0; i < nodes.length; i++){
              let pv = this.p5.createVector(this.position.x, this.position.y);
              let pd = this.p5.createVector(pos_difference.x, pos_difference.y);
              pv.add(pd.mult(this.size));
@@ -153,7 +158,7 @@ class Node {
              //console.log("px "+ p.x)
              var a = this.boundaryCheckIndividual(pv.x, pv.y);
              //console.log(a);
-             if (pv.sub(this.nodes[i].position).mag()<1 || !a){
+             if (pv.sub(nodes[i].position).mag()<1 || !a){
                canMove = false;
                //console.log("onTop");
              }
@@ -179,12 +184,12 @@ class Node {
   				this.random_spread.mult(this.size);
 
           let canMove = true;
-          for (let i = 0; i < this.nodes.length; i++){
+          for (let i = 0; i < nodes.length; i++){
             let pv2 = this.p5.createVector(this.position.x, this.position.y);
             pv2.add(this.random_spread);
-            //console.log("osc: " + p.sub(this.nodes[i].position).mag());
+            //console.log("osc: " + p.sub(nodes[i].position).mag());
             var a2 = this.boundaryCheckIndividual(pv2.x, pv2.y);
-            if (pv2.sub(this.nodes[i].position).mag()<1 || !a2){
+            if (pv2.sub(nodes[i].position).mag()<1 || !a2){
               canMove = false;
               //console.log("ON TOP");
             }
@@ -217,7 +222,7 @@ class Node {
 
 function repositionHashtags(p5) {
 	//console.log(spacing_distance);
-	var count = this.tags.length;
+	var count = global_hashtags.length;
 	var numRows = p5.ceil(count / 2);
 	var numCols = p5.ceil(count / numRows);
 	if (numRows - numCols > 1) {
@@ -252,7 +257,7 @@ function repositionHashtags(p5) {
 			yP += yAmount + spacing_distance + hash_radius;
 		//	console.log(index);
 			if (index < count) {
-				this.tags[index].setPosition(p5.createVector(x, y));
+				global_hashtags[index].setPosition(p5.createVector(x, y));
 			}
 			index += 1;
 		}
@@ -260,25 +265,29 @@ function repositionHashtags(p5) {
 }
 
 const setup = (p5, canvasParentRef, props) => {
+  // RESET GLOBAL STATE
+  node_size = 100; // reset the global
+  spacing_distance = 0; // reset the global
+  while (nodes.length) { nodes.pop(); }
+  while (global_hashtags.length) { global_hashtags.pop(); }
+  // END RESET GLOBAL STATE
+
   p5.createCanvas(p5.windowWidth-400, 555).parent(canvasParentRef);
   p5.background(255);
-  this.nodes = [];
-  this.tags = [];
 	p5.noStroke();
-	//font = p5.loadFont("https://fonts.google.com/specimen/Press+Start+2P");
 	font = p5.loadFont('/fonts/PressStart2P-Regular.ttf');
 	hover_font = p5.loadFont('/fonts/Barlow-Regular.ttf');
 
-	node_size = p5.int(node_size/props.p.length); // the more projects we add, the smaller the this.nodes will become
+	node_size = p5.int(node_size/props.p.length); // the more projects we add, the smaller the nodes will become
 	spacing_distance = node_size/2 + 20;
 	for(var i = 0; i < props.p.length; i++){
 		// switched props.p[i].tags with props.p[i].category
 		var n = new Node(p5, props.p[i].coverImage, props.p[i].title, props.p[i].author["name"], props.p[i].category, props.p[i].date, props.p[i].excerpt, props.p[i].slug);
-		this.nodes.push(n);
+		nodes.push(n);
 	}
 	repositionHashtags(p5);
-	for(var i = 0; i < this.nodes.length; i++){
-		gravitationalPull(p5, this.nodes[i],this.nodes);
+	for(var i = 0; i < nodes.length; i++){
+		gravitationalPull(p5, nodes[i],nodes);
 	}
  }
 
@@ -291,18 +300,18 @@ const draw = p5 => {
   p5.strokeWeight(7);
   p5.rect(p5.width/2,p5.height/2, p5.width-7,p5.height-7);
 
-	for (var i = 0; i < this.nodes.length; i++) {
-    for (var j = i; j < this.nodes.length; j++) {
-      assignRelatedness(p5, this.nodes[i], this.nodes[j]);
+	for (var i = 0; i < nodes.length; i++) {
+    for (var j = i; j < nodes.length; j++) {
+      assignRelatedness(p5, nodes[i], nodes[j]);
     }
 	}
 
 	displayHashtags();
 
-	for (var i = 0; i < this.nodes.length; i++) {
-		this.nodes[i].update(this.nodes,i);
-		this.nodes[i].display();
-		hover(p5, this.nodes[i]);
+	for (var i = 0; i < nodes.length; i++) {
+		nodes[i].update(nodes,i);
+		nodes[i].display();
+		hover(p5, nodes[i]);
 	}
 
 	boundaryCheck(p5);
@@ -312,52 +321,52 @@ const windowResized = p5 => {
 	var amount_changed = p5.width;
 	p5.resizeCanvas(p5.windowWidth-400, 555);
 	amount_changed -= p5.width;
-	for(var i = 0; i < this.nodes.length; i++){
-		//console.log(this.nodes[i].getPosition().x, amount_changed);
-		var reset_position = p5.createVector(this.nodes[i].getPosition().x-amount_changed, this.nodes[i].getPosition().y);
-		this.nodes[i].setPosition(reset_position);
+	for(var i = 0; i < nodes.length; i++){
+		//console.log(nodes[i].getPosition().x, amount_changed);
+		var reset_position = p5.createVector(nodes[i].getPosition().x-amount_changed, nodes[i].getPosition().y);
+		nodes[i].setPosition(reset_position);
 	}
 }
 
 const mousePressed = p5 => {
-  for (var i = 0; i < this.nodes.length; i++) {
-    if (p5.mouseX > this.nodes[i].getPosition().x - this.nodes[i].size / 2 &&
-      p5.mouseX < this.nodes[i].getPosition().x + this.nodes[i].size / 2 &&
-      p5.mouseY > this.nodes[i].getPosition().y - this.nodes[i].size / 2 &&
-      p5.mouseY < this.nodes[i].getPosition().y + this.nodes[i].size / 2) {
-      this.nodes[i].setClick();
+  for (var i = 0; i < nodes.length; i++) {
+    if (p5.mouseX > nodes[i].getPosition().x - nodes[i].size / 2 &&
+      p5.mouseX < nodes[i].getPosition().x + nodes[i].size / 2 &&
+      p5.mouseY > nodes[i].getPosition().y - nodes[i].size / 2 &&
+      p5.mouseY < nodes[i].getPosition().y + nodes[i].size / 2) {
+      nodes[i].setClick();
     }
 	}
 
-	for (var i = 0; i < this.tags.length; i++) {
-    this.tags[i].checkPositions();
+	for (var i = 0; i < global_hashtags.length; i++) {
+    global_hashtags[i].checkPositions();
   }
 }
 
 const mouseDragged = p5 => {
-  for (var i = 0; i < this.tags.length; i++) {
-    if (this.tags[i].getDragged() == true) { // if its being dragged
-      this.tags[i].setPosition(p5.createVector(p5.mouseX, p5.mouseY));
+  for (var i = 0; i < global_hashtags.length; i++) {
+    if (global_hashtags[i].getDragged() == true) { // if its being dragged
+      global_hashtags[i].setPosition(p5.createVector(p5.mouseX, p5.mouseY));
     }
   }
 }
 
 const mouseReleased = p5 => {
-  for (var i = 0; i < this.tags.length; i++) {
-    if (this.tags[i].getDragged() == true) {
-      this.tags[i].setDragged(false);
+  for (var i = 0; i < global_hashtags.length; i++) {
+    if (global_hashtags[i].getDragged() == true) {
+      global_hashtags[i].setDragged(false);
     }
 	}
 
-	for (var i = 0; i < this.nodes.length; i++) {
-		gravitationalPull(p5, this.nodes[i], this.nodes);
+	for (var i = 0; i < nodes.length; i++) {
+		gravitationalPull(p5, nodes[i], nodes);
 	}
 }
 
 function displayHashtags() {
-	for (var i = 0; i < this.tags.length; i++) {
+	for (var i = 0; i < global_hashtags.length; i++) {
 		//grab their positions and visualize their names at that coordinate
-		this.tags[i].display();
+		global_hashtags[i].display();
 	}
 }
 
@@ -434,9 +443,9 @@ function gravitationalPull(p5, p, ps) {
 	var count = 0;
 
   for (var i = 0; i < ht_array.length; i++) {
-    for (var j = 0; j < this.tags.length; j++) {
-      var finalPos = p5.createVector(this.tags[j].getPosition().x, this.tags[j].getPosition().y);
-      if (p5.match(this.tags[j].getName(), ht_array[i])) {
+    for (var j = 0; j < global_hashtags.length; j++) {
+      var finalPos = p5.createVector(global_hashtags[j].getPosition().x, global_hashtags[j].getPosition().y);
+      if (p5.match(global_hashtags[j].getName(), ht_array[i])) {
 				count++;
         directionVector.add(finalPos);
       }
@@ -465,18 +474,18 @@ function gravitationalPull(p5, p, ps) {
 }
 
 function boundaryCheck(p5) {
-	for (var i = 0; i < this.nodes.length; i++) {
-		if (this.nodes[i].getPosition().x <= spacing_distance) {
-			this.nodes[i].setFinalPosition(this.nodes[i].getFinalPosition().add(p5.createVector(1, p5.random(-2, 2))));
+	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i].getPosition().x <= spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(1, p5.random(-2, 2))));
 		}
-		if (this.nodes[i].getPosition().x >= p5.width - spacing_distance) {
-			this.nodes[i].setFinalPosition(this.nodes[i].getFinalPosition().add(p5.createVector(-1, p5.random(-2, 2))));
+		if (nodes[i].getPosition().x >= p5.width - spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(-1, p5.random(-2, 2))));
 		}
-		if (this.nodes[i].getPosition().y <= spacing_distance) {
-			this.nodes[i].setFinalPosition(this.nodes[i].getFinalPosition().add(p5.createVector(p5.random(-2, 2), 1)));
+		if (nodes[i].getPosition().y <= spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(p5.random(-2, 2), 1)));
 		}
-		if (this.nodes[i].getPosition().y >= 555 - spacing_distance) {
-			this.nodes[i].setFinalPosition(this.nodes[i].getFinalPosition().add(p5.createVector(p5.random(-2, 2), -1)));
+		if (nodes[i].getPosition().y >= 555 - spacing_distance) {
+			nodes[i].setFinalPosition(nodes[i].getFinalPosition().add(p5.createVector(p5.random(-2, 2), -1)));
 		}
 	}
 
