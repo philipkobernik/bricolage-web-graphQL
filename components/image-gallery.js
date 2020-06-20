@@ -8,18 +8,18 @@ export default function ImageGallery({ images }) {
     let classN = 'shadow-small hover:shadow-medium transition-shadow duration-200';
     if (index % 2 == 0){
       // EVEN (LEFT)
-      if(aspectRatio > 0.8) {
+      if(aspectRatio > 1) {
         // LANDSCAPE
         classN += ' md:col-start-1';
         classN += ' md:col-end-4';
       } else {
         // PORTRAIT
-        classN += ' md:col-start-1';
-        classN += ' md:col-end-3';
+        classN += ' md:col-start-2';
+        classN += ' md:col-end-4';
       }
     } else {
       // ODD (RIGHT)
-      if(aspectRatio > 0.8) {
+      if(aspectRatio > 1) {
         // LANDSCAPE
         classN += ' md:col-start-2';
         classN += ' md:col-end-5';
