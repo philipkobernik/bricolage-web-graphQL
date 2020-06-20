@@ -69,7 +69,6 @@ export default function ProjectBody({
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: content }}
       />
-      <div className="m-6 text-purple text-md"> <a className="hover:underline" href={externalUrl}> {externalUrl} </a></div>
       </div>
     </div>
     </>
