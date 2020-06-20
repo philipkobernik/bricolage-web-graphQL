@@ -17,7 +17,7 @@ export default function ProjectBody({
     <>
       <ProjectTitle>{title}</ProjectTitle>
       <div className="grid grid-cols-1 md:grid-cols-4">
-        <div className="md:col-start-1 md:col-end-2 z-10 m-6">
+        <div className="md:col-start-1 md:col-end-2 z-10 my-6 mr-6">
           <div className="max-w-2xl mx-auto mb-10">
             <div className="block">
               <Avatar name={author.name} picture={author.picture} slug={author.slug}/>
@@ -43,13 +43,13 @@ export default function ProjectBody({
 
               <ProjectSideBar title="source" thing={sourceCodeUrl} >
                 <a className="hover:underline" href={sourceCodeUrl} target="_blank">
-                  visit external repository
+                  Visit external repository
                 </a>
               </ProjectSideBar>
 
               <ProjectSideBar title="link" thing={externalUrl} >
                 <a className="hover:underline" href={externalUrl} target="_blank">
-                  visit external project
+                  Visit external project
                 </a>
               </ProjectSideBar>
             </div>

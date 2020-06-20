@@ -62,7 +62,7 @@ export default function Author({ author, projects, preview}) {
                     className={markdownStyles['markdown']}
                     dangerouslySetInnerHTML={{ __html: author.artistStatement }}
                   />
-                <div className="m-6 text-purple text-md"> <a className="hover:underline" href={author.website}> {author.website} </a></div>
+                <div className="m-6 text-purple text-lg"> <a className="hover:underline" href={author.website}> {author.website} </a></div>
               </div>
           </div>
           </article>
