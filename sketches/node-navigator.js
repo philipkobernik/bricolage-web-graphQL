@@ -2,6 +2,7 @@
 // Globals that don't change
 let hash_radius = 50;
 let text_size = 12;
+let sketchHeight = 500;
 
 // Globals that DO change, and therefore need to be reset in setup()
 let node_size = 100;
@@ -271,7 +272,7 @@ const setup = (p5, canvasParentRef, props) => {
   while (global_hashtags.length) { global_hashtags.pop(); }
   // END RESET GLOBAL STATE
 
-  p5.createCanvas(p5.windowWidth - 400, 555).parent(canvasParentRef);
+  p5.createCanvas(canvasParentRef.getBoundingClientRect().width, sketchHeight).parent(canvasParentRef);
 	p5.background(255);
 
 	p5.noStroke();
@@ -329,9 +330,9 @@ const draw = p5 => {
 	boundaryCheck(p5);
 }
 
-const windowResized = p5 => {
+const windowResized = (p5, canvasParentRef) => {
 	var amount_changed = p5.width;
-	p5.resizeCanvas(p5.windowWidth - 400, 555);
+	p5.resizeCanvas(canvasParentRef.getBoundingClientRect().width, sketchHeight);
 	amount_changed -= p5.width;
 	for (var i = 0; i < nodes.length; i++) {
 		//console.log(nodes[i].getPosition().x, amount_changed);
