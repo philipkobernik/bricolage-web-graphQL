@@ -3,10 +3,11 @@ import ProjectTitle from '../components/project-title'
 import Avatar from '../components/avatar'
 import Date from '../components/date'
 import Link from 'next/link'
+import Collaborator from '../components/collaborator'
+import Lab from '../components/lab'
 
 
-export default function ProjectBody({ title, coverImage, date, author, tags, content }) {
-
+export default function ProjectBody({ title, coverImage, date, author, collaborators, lab, tags, content, externalurl }) {
   return (
     <>
     <ProjectTitle>{title}</ProjectTitle>
@@ -14,17 +15,24 @@ export default function ProjectBody({ title, coverImage, date, author, tags, con
 
       <div className="md:col-start-1 md:col-end-2 z-10 m-6">
         <div className="max-w-2xl mx-auto mb-40">
-          <div className="hidden md:block md:mb-12">
+          <div className="hidden md:block">
             <Avatar name={author.name} picture={author.picture} slug={author.slug}/>
+            {collaborators != "" && <Collaborator collaborators = {collaborators}/>}
+            {lab != "" && <Lab labs = {lab}/>}
+
           </div>
 
-          <div className="block md:hidden mb-6">
+          <div className="block md:hidden">
             <Avatar name={author.name} picture={author.picture} slug={author.slug}/>
+            {collaborators != "" && <Collaborator collaborators = {collaborators}/>}
+            {lab != "" && <Lab labs = {lab}/>}
           </div>
-          <div className="mb-6 text-lg">
-            <Date dateString={date} />
-            <br/>
+
+          <div className="my-6 text-lg">
             { tags.map(t => (<Link as={`/tags/${t.slug}`} href="/tags/[slug]"><a className="text-orange hover:underline">{t.name}<br/></a></Link>))}
+          </div>
+          <div className="my-6 text-lg">
+            <Date dateString={date} />
           </div>
         </div>
       </div>
@@ -34,6 +42,7 @@ export default function ProjectBody({ title, coverImage, date, author, tags, con
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: content }}
       />
+      <div className="m-6 text-purple text-md"> <a className="hover:underline" href={externalurl}> {externalurl} </a></div>
       </div>
     </div>
     </>

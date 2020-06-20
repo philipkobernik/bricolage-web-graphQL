@@ -13,6 +13,7 @@ import ProjectTitle from '../../components/project-title'
 import Loading from '../../components/loading'
 import Head from 'next/head'
 import Intro from '../../components/intro'
+import Footer from '../../components/footer'
 import VideoPlayer from '../../components/video-player'
 
 import { PRODUCTION_SITE_URL } from '../../lib/constants'
@@ -21,9 +22,8 @@ import { ParallaxProvider } from 'react-scroll-parallax';
 
 
 
-export default function Project({ project, moreProjects, preview, allProjects }) {
-
-  const router = useRouter()
+export default function Project({ project, moreProjects, preview }) {
+  const router = useRouter();
   if (!router.isFallback && !project?.slug) {
     return <ErrorPage statusCode={404} />
   }
@@ -37,7 +37,7 @@ export default function Project({ project, moreProjects, preview, allProjects })
           <Loading>loading…</Loading>
         ) : (
           <>
-          <Intro projects = {allProjects}/>
+          <Intro showNodeNavi={false}/>
             <article>
               <Head>
                 <title>
@@ -58,17 +58,21 @@ export default function Project({ project, moreProjects, preview, allProjects })
               />
 
               <ProjectBody
-              title={project.title}
-              coverImage={project.coverImage}
-              date={project.date}
-              author={project.author}
-              tags={project.tags}
-              content={project.content}
+                title={project.title}
+                coverImage={project.coverImage}
+                date={project.date}
+                author={project.author}
+                collaborators={project.collaborators}
+                lab = {project.labAffiliation.length > 0 && project.labAffiliation[0].name}
+                tags={project.tags}
+                content={project.content}
+                externalurl = {project.externalUrl}
               />
             </article>
             {project.videoLink.length > 0 && <VideoPlayer videoLink={project.videoLink}/>}
             {project.imageGallery.length > 0 && <ImageGallery images={project.imageGallery} />}
             {moreProjects.length > 0 && false && <MoreStories projects={moreProjects} />}
+            <Footer/>
           </>
         )}
       </Container>
@@ -80,7 +84,6 @@ export default function Project({ project, moreProjects, preview, allProjects })
 export async function getStaticProps({ params, preview }) {
   const data = await getProjectAndMoreProjects(params.slug, preview)
   const content = await markdownToHtml(data?.project?.content || '')
-  const allProjects = await getAllProjectsForHome(preview)
 
   return {
     props: {
@@ -89,8 +92,7 @@ export async function getStaticProps({ params, preview }) {
         ...data?.project,
         content,
       },
-      moreProjects: data?.moreProjects,
-      allProjects
+      moreProjects: data?.moreProjects
     },
   }
 }
