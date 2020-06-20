@@ -3,8 +3,6 @@ import ProjectTitle from '../components/project-title'
 import Avatar from '../components/avatar'
 import Date from '../components/date'
 import Link from 'next/link'
-import Collaborator from '../components/collaborator'
-import Lab from '../components/lab'
 import ProjectSideBar from '../components/project-side-bar'
 import TagsList from '../components/tags-list'
 
