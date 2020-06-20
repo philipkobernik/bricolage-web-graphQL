@@ -14,7 +14,7 @@ export default function Intro({projects=[], showNodeNavi=false}) {
           </div>
         </h1>
       </section>
-      <h4 className=" mx-left text-xl mb-16">
+      <h4 className=" mx-left text-xl mt-6 mb-16">
           search | disrupt | play | construct
       </h4>
 
