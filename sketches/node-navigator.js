@@ -249,7 +249,7 @@ function repositionHashtags(p5) {
 		//console.log("first x: ", xP, " second x: ", xP + xAmount - spacing_distance);
 		//var x = (xP + xP + xAmount) / 2;
 		var x = p5.random(xP, xP + xAmount);
-		xP += xAmount + spacing_distance + hash_radius;
+		xP += xAmount + spacing_distance * 2 + hash_radius;
 		for (var j = 0; j < numCols; j++) {
 			//	console.log("first y: ", yP, " second y: ", yP + yAmount - spacing_distance);
 			//var y = (yP + yP + yAmount)/2;
