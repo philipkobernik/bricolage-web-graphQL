@@ -14,7 +14,7 @@ export default function ProjectPreview({
   slug,
 }) {
   return (
-    <div class="grid grid-cols-3">
+    <div className="grid grid-cols-3">
       <div className="col-start-1 col-end-2 pr-8">
         <CoverImage
           slug={slug}
@@ -23,7 +23,7 @@ export default function ProjectPreview({
         />
       </div>
 
-      <div class="col-start-2 col-end-4">
+      <div className="col-start-2 col-end-4">
         <h3 className="w-full text-3xl mb-4 leading-snug">
           <Link as={`/projects/${slug}`} href="/projects/[slug]">
             <a className="hover:underline">{title}</a>
@@ -33,7 +33,13 @@ export default function ProjectPreview({
         <p className="w-full text-lg leading-relaxed mb-4">{excerpt}</p>
 
         <div className="mb-6 text-lg">
-          { tags.map(t => (<Link as={`/tags/${t.slug}`} href="/tags/[slug]"><a className="text-orange hover:underline">{t.name} </a></Link>))}
+        {
+          tags.map(t => (
+            <Link as={`/tags/${t.slug}`} href="/tags/[slug]" key={t.slug}>
+              <a className="text-orange hover:underline">{t.name} </a>
+            </Link>
+          ))
+        }
         </div>
 
         <Avatar name={author.name} picture={author.picture} slug={authorSlug}/>
