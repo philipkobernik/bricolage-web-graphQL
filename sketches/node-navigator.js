@@ -1,11 +1,15 @@
-let node_size = 100; //initial
+
+// Globals that don't change
 let hash_radius = 50;
 let text_size = 12;
-let spacing_distance = 0;
 
+// Globals that DO change, and therefore need to be reset in setup()
+let node_size = 100;
+let spacing_distance = 0;
 let nodes = [];
 let global_hashtags = [];
 
+// Globals that can be overwritten
 let font = "";
 let hover_font = "";
 
@@ -260,10 +264,17 @@ function repositionHashtags(p5) {
 }
 
 const setup = (p5, canvasParentRef, props) => {
-	p5.createCanvas(p5.windowWidth - 400, 555).parent(canvasParentRef);
+  // RESET GLOBAL STATE
+  node_size = 100; // reset the global
+  spacing_distance = 0; // reset the global
+  while (nodes.length) { nodes.pop(); }
+  while (global_hashtags.length) { global_hashtags.pop(); }
+  // END RESET GLOBAL STATE
+
+  p5.createCanvas(p5.windowWidth - 400, 555).parent(canvasParentRef);
 	p5.background(255);
+
 	p5.noStroke();
-	//font = p5.loadFont("https://fonts.google.com/specimen/Press+Start+2P");
 	font = p5.loadFont('/fonts/PressStart2P-Regular.ttf');
 	hover_font = p5.loadFont('/fonts/Barlow-Regular.ttf');
 
